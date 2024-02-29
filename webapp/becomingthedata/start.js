@@ -9,7 +9,8 @@ app.set("view engine", "ejs")
 
 // index
 app.get('/', (req, res)=>{
-    res.render('pages/index');
+    const filePath = path.resolve(__dirname, 'views/pages/index.html');
+    res.sendFile(filePath);
 })
 
 app.listen(3000, ()=>{
