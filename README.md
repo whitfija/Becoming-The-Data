@@ -2,7 +2,15 @@
 Interactive data collection/visualization software for GATech's "Dataseum" exhibit. 
 Hosted in Price Gilbert Library, April 2024.
 
+Spring 2024 CS4605 Project
 
+### 1. documentation/
+
+- project documentation
+
+### 2. webapp/
+
+- directories and files for becoming the data web application
 
 # Team members / contributors
 
