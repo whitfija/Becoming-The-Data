@@ -9,13 +9,37 @@
         <script src="/public/js/main.js"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="/public/css/main.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/public/css/map.css">
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </head>
 
     <body>
+        <div class="logo">
+            <img src="/public/img/transparent_logo.svg" alt="Logo">
+        </div>
         <div id="content">
             <div id="map">
                 Hello World
             </div>
         </div>
+
+        <script>
+            var map = L.map('map').setView([33.749, -84.388], 11); // atlanta coordinates
+    
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+    
+            // dot example
+            var dot = L.circleMarker([33.749, -84.388], {
+                color: '#ff0000', // Red color
+                fillColor: '#ff0000',
+                fillOpacity: 1,
+                radius: 8
+            }).addTo(map);
+            dot.bindPopup("Atlanta");
+    
+        </script>
     </body>
 </html>

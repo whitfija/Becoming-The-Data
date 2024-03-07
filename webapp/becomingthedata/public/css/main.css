@@ -13,4 +13,53 @@
 body {
     font-family: 'Space_Grotesk', sans-serif;
     font-size: larger;
+    background-color: #F0EADE;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+    height: 98vh;
+    width: 100%;
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #22201C;
+    color: #F0EADE;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid transparent; /* Add transparent border */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.button:hover {
+    color: #22201C;
+    background-color: #F0EADE;
+    border-color: #22201C;
+}
+
+.logo {
+    position: fixed;
+    top: 20px; 
+    left: 20px; 
+    opacity: 0.7; 
+    z-index: 9999; 
+}
+
+.logo img {
+    width: 100px;
+    height: auto; 
+}
+
+.textend {
+    padding-left: 30px;
 }
