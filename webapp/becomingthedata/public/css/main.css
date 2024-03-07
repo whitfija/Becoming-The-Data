@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Space_Grotesk';
+    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Space_Grotesk';
+    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+body {
+    font-family: 'Space_Grotesk', sans-serif;
+    font-size: larger;
+}
