@@ -1,0 +1,1 @@
+this folder is to store the secret key, key should not be publicly available, so in github this should be empty (gitignore should handle this)
