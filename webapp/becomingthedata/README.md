@@ -2,7 +2,7 @@
 
 ## Installation
 
-To install all required packages for this Node.js application, run the following command in your terminal:
+To install all required packages for this Node.js application, navigate into the functions folder and run the following command in your terminal:
 ```
 npm install
 ```
