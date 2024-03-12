@@ -2,14 +2,9 @@
 <html>
     <head>
         <title>GT Dataseum</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="Ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="/img/dataseum_logo.png" type="image/png">
-        <script src="/js/main.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <%- include('../includes/head'); %>
 
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <script src="/js/firebase.js"></script>
 
     </head>
@@ -18,13 +13,13 @@
         <div class="logo">
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
-        <div id="content" class="center">
+        <div id="content" class="center full">
             <h1>Visitor Data</h1>
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Session ID</th>
+                        <th>SessionID</th>
+                        <th>Nickname</th>
                         <th>Active</th>
                         <th>End Time</th>
                         <th>Start Time</th>
@@ -35,11 +30,11 @@
                 <tbody>
                     <% visitors.forEach(visitor => { %>
                         <tr>
-                            <td><%= visitor.name %></td>
                             <td><%= visitor.sessionid %></td>
+                            <td><%= visitor.name %></td>
                             <td><%= visitor.active %></td>
-                            <td><%= visitor.endtime %></td>
-                            <td><%= visitor.starttime %></td>
+                            <td><%= visitor.endtime.toDate().toLocaleString() %></td>
+                            <td><%= visitor.starttime.toDate().toLocaleString() %></td>
                             <td><%= visitor.score %></td>
                             <td><%= visitor.stations.join(', ') %></td>
                         </tr>

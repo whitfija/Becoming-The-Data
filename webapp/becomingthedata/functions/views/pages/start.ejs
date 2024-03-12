@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GT Dataseum</title>
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    </head>
+
+    <body>
+        <div id="content" class="center" style="height: 95vh;">
+            <h1 class="title3">Session: <%= sessionId %></h1>
+            <h1 class="title1">Scan a QR code.</h1>
+            <video id="scanner"></video>
+        </div>
+
+        <script type="text/javascript">
+            let scanner = new Instascan.Scanner({ video: document.getElementById('scanner') });
+            scanner.addListener('scan', function (content) {
+                // routine for scanning
+              console.log(content);
+            });
+            Instascan.Camera.getCameras().then(function (cameras) {
+              if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+              } else {
+                console.error('No cameras found.');
+              }
+            }).catch(function (e) {
+              console.error(e);
+            });
+          </script>
+    </body>
+</html>

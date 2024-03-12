@@ -1,19 +1,29 @@
 @font-face {
     font-family: 'Space_Grotesk';
-    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf') format('truetype');
+    src: url('/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf') format('truetype');
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Space_Grotesk';
-    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf') format('truetype');
+    src: url('/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf') format('truetype');
     font-weight: bold;
 }
 
 body {
     font-family: 'Space_Grotesk', sans-serif;
     font-size: larger;
-    background-color: #F0EADE;
+    background-color: var(--ivory-cream);
+    color: var(--ash-black);
+    margin: 0;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #content {
@@ -24,42 +34,193 @@ body {
 .center {
     align-items: center;
     justify-content: center;
-    height: 98vh;
     width: 100%;
 }
 
 .button {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #22201C;
-    color: #F0EADE;
+    background-color: var(--ash-black);
+    color: var(--ivory-cream);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 26px;
     font-weight: bold;
     cursor: pointer;
     border: 2px solid transparent; /* Add transparent border */
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .button:hover {
-    color: #22201C;
-    background-color: #F0EADE;
-    border-color: #22201C;
+    color: var(--ash-black);
+    background-color: var(--ivory-cream);
+    border-color: var(--ash-black);
+}
+
+.orange {
+    background-color: var(--fall-orange);
+    color: var(--ivory-cream);
+}
+
+.blue {
+    background-color: var(--mist-blue);
+    color: var(--ivory-cream);
+}
+
+#titles {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+    margin-top: 150px;
+}
+
+.title1 {
+    font-weight: bold;
+    font-size: 55px;
+}
+
+.title2 {
+    font-weight: bold;
+    font-size: 130px;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: inherit;
+}
+
+.title2 img{
+    height: 130px;
+}
+
+.title3 {
+    font-size: 35px;
 }
 
 .logo {
     position: fixed;
-    top: 20px; 
+    top: 93vh; 
     left: 20px; 
-    opacity: 0.7; 
+    opacity: 0.5; 
     z-index: 9999; 
 }
 
 .logo img {
-    width: 100px;
+    width: 200px;
     height: auto; 
 }
 
 .textend {
     padding-left: 30px;
+}
+
+#te1 {
+    display: block;
+}
+
+#te2 {
+    display: none;
+}
+
+.full {
+    height: 95vh;
+}
+
+/* Mobile-specific CSS */
+@media only screen and (max-width: 600px) {
+    
+    .button {
+        font-size: 18px; /* Adjust button font size for mobile */
+        padding: 10px 20px; /* Adjust button padding for mobile */
+    }
+
+    .logo img {
+        width: 100px; /* Adjust logo size for mobile */
+    }
+
+    .title2 {
+        font-size: 75px; /* Adjust title font size for mobile */
+    }
+
+    .title2 img{
+        height: 75px;
+    }
+
+    #titles {
+        margin-top: 100px; /* Adjust title margin-top for mobile */
+    }
+}
+
+@media only screen and (max-width: 800px) { 
+    h1 {
+        width: 100%;
+        word-wrap: break-word;
+    }
+
+    .title1 {
+        font-size: 33px; /* Adjust title font size for mobile */
+    }
+
+    .title2 {
+        font-size: 90px; /* Adjust title font size for mobile */
+    }
+
+    .title2 img{
+        height: 90px;
+    }
+
+    .title3 {
+        font-size: 20px; /* Adjust title font size for mobile */
+    }
+
+    #titles {
+        margin-top: 150px;
+        margin-bottom: 80px; /* Adjust title margin-top for mobile */
+    }
+}
+
+@media only screen and (max-width: 550px) { 
+    body {
+        background-color: var(--ash-black);
+        color: var(--ivory-cream);
+    }
+
+    h1 {
+        color: var(--ivory-cream);
+    }
+
+    .button {
+        color: var(--ash-black);
+    }
+
+    
+    .title2 {
+        font-size: 50px; /* Adjust title font size for mobile */
+    }
+
+    .title2 img{
+        height: 50px;
+    }
+
+    #titles {
+        margin-bottom: 60px;
+        margin-top: 60px;
+    }
+
+    #te1 {
+        display: none;
+    }
+    
+    #te2 {
+        display: block;
+    }
+
+    .logo {
+        top: 7vh; 
+    }
+
+    .logo img {
+        width: 70px; /* Adjust logo size for mobile */
+    }
 }

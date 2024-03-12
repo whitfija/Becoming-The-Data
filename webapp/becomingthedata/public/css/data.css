@@ -28,3 +28,30 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background-color: #ddd;
 }
+
+#scanner {
+    margin-top: 30px;
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    border: 5px solid var(--grass-green);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.full {
+    height: 95vh;
+}
+
+@media only screen and (max-width: 600px) {
+    table {
+        width: 80%;
+        font-size: 10px;
+        overflow-x: scroll;
+    }
+    
+    th, td {
+        padding: 5px;
+        word-wrap: break-word;
+    }
+}

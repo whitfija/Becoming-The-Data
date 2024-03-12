@@ -36,6 +36,13 @@ const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/
 initializeApp();
 const db = getFirestore();
 
+// sessions
+
+app.use(session({
+    secret: 'secret_key',
+    resave: false,
+    saveUninitialized: false
+}));
 
 // Function to fetch and return visitors data
 async function displayVisitors() {
@@ -54,7 +61,6 @@ async function displayVisitors() {
 
 // index
 app.get('/', (req, res)=>{
-    res.set("Cache")
     res.render("pages/index");
 })
 
@@ -68,5 +74,22 @@ app.get('/data', async (req, res)=>{
     const visitors = await displayVisitors();
     res.render('pages/datatestpage', { visitors });
 })
+
+
+// --------------------- experience ---------------------
+
+function generateSessionId() {
+    // Generate a random number between 1000 and 9999
+    return Math.floor(Math.random() * 9000) + 1000;
+}
+
+// start screen
+app.get('/start', (req, res)=>{
+    const sessionId = req.session.sessionId || generateSessionId();
+    req.session.sessionId = sessionId;
+    res.render("pages/start", { sessionId });
+})
+
+
 
 exports.app = functions.https.onRequest(app);

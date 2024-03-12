@@ -2,14 +2,8 @@
 <html>
     <head>
         <title>Atlanta Map | GT Dataseum</title>
-        <link rel="icon" type="image/x-icon" href="/img/dataseum_logo.png">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="Ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="/js/main.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
+        <%- include('../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/map.css">
-
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </head>
@@ -18,18 +12,15 @@
         <div class="logo">
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
-        <div id="content">
+        <div id="content full">
             <div id="map">
-                Hello World
+                <iframe width="95%" height="95%" src="https://api.maptiler.com/maps/7fa13f10-7149-45f2-ae8c-154f26e2cc1e/?key=U2tGYk0Y3xdO1ag6fz8M#12.7/33.75405/-84.38089" frameborder="0"></iframe>
             </div>
         </div>
 
         <script>
-            var map = L.map('map').setView([33.749, -84.388], 11); // atlanta coordinates
-    
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+           document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('map').setView([33.749, -84.388], 11); // Atlanta coordinates
     
             // dot example
             var dot = L.circleMarker([33.749, -84.388], {
@@ -39,6 +30,7 @@
                 radius: 8
             }).addTo(map);
             dot.bindPopup("Atlanta");
+        });
     
         </script>
     </body>

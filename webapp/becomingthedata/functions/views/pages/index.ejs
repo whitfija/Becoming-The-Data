@@ -2,21 +2,24 @@
 <html>
     <head>
         <title>GT Dataseum</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="Ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="/img/dataseum_logo.png" type="image/png">
-        <script src="/js/main.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/tile.css">
     </head>
 
     <body>
         <div class="logo">
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
+        <%- include('../includes/homepagetiles'); %>
+
         <div id="content" class="center">
-            <p style="font-size: 70px">Hello World<img class="textend" src="/img/3squares.png" style="height: 49px; width: auto;" ></p>
-            <a href="/map" class="button">View Map</a>
+            <div id="titles">
+                <h1 id="pretitle" class="title1">Welcome To The</h1>
+                <h1 id="title" class="title2">DATASEUM<img id="te1" class="textend" src="/img/3squares.png"><img id="te2" class="textend" src="/img/3squares_inverse.png"></h1>
+                <h1 id="subtitle" class="title3">A Place To Play With Data</h1>
+            </div>
+            <a href="/start" class="button orange" >I'm ready to Become The Data.</a>
+            <a href="/about" class="button blue">I want to learn more.</a>
         </div>
     </body>
 </html>
