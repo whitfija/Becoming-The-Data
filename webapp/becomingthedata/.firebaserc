@@ -1,5 +1,11 @@
 {
   "projects": {
     "default": "becoming-the-data"
+  },
+  "targets": {},
+  "etags": {
+    "becoming-the-data": {
+      "extensionInstances": {}
+    }
   }
 }
