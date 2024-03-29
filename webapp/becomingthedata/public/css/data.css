@@ -39,10 +39,6 @@ tbody tr:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.full {
-    height: 95vh;
-}
-
 @media only screen and (max-width: 600px) {
     table {
         width: 80%;

@@ -59,9 +59,23 @@ async function displayVisitors() {
     }
 }
 
+// check if session exists
+const checkSession = (req, res, next) => {
+    if (!req.session.sessionId) {
+        res.redirect('/');
+    } else {
+        next();
+    }
+};
+
 // index
 app.get('/', (req, res)=>{
     res.render("pages/index");
+})
+
+// about
+app.get('/about', (req, res)=>{
+    res.render("pages/about");
 })
 
 // map
@@ -83,13 +97,72 @@ function generateSessionId() {
     return Math.floor(Math.random() * 9000) + 1000;
 }
 
-// start screen
+// start experience, build session if needed, navigate to scanner
 app.get('/start', (req, res)=>{
     const sessionId = req.session.sessionId || generateSessionId();
     req.session.sessionId = sessionId;
-    res.render("pages/start", { sessionId });
+    res.redirect('/scanner');
 })
 
+// scanner screen
+app.get('/scanner', (req, res)=>{
+    const sessionId = req.session.sessionId || generateSessionId();
+    req.session.sessionId = sessionId;
+    res.render("pages/scanner", { sessionId });
+})
+
+// finish experience screen
+app.get('/finish', checkSession, (req, res)=>{
+    // get session info then send to screen to be displayed
+    res.render("pages/finish");
+})
+
+// end experience
+app.get('/end', checkSession, (req, res)=>{
+    // store info to firebase
+
+    // end session
+    const sessionId = req.session.sessionId;
+    delete req.session.sessionId;
+
+    res.redirect(`/summary/${sessionId}`);
+})
+
+const desctosurvey = {
+    'social_sustainability': 'experience1',
+    'ocean_accessibility': 'experience2',
+    'nature_preservation': 'experience3',
+    'public_parks': 'experience4',
+    'flora_findings': 'experience5',
+};
+
+// nav to survey prompt 
+app.get('/survey/:description', (req, res) => {
+    const description = req.params.description; 
+    functions.logger.info("Description:", description);
+    
+    if (desctosurvey.hasOwnProperty(description)) {
+        const fileName = desctosurvey[description];
+        functions.logger.info("File name:", fileName);
+        res.render("pages/" + fileName, { description: description });
+    } else {
+        functions.logger.info("Unrecognized description:", description); // Print unrecognized description
+        // unrecognized
+        res.redirect('/');
+    }
+
+});
+
+// save survey response
+app.get('/survey/submit/', checkSession, (req, res) => {
+    // store data into firebase by session info
+    res.redirect('/');
+});
+
+// unknown
+app.get('*', (req, res) => {
+    res.redirect('/');
+});
 
 
 exports.app = functions.https.onRequest(app);
