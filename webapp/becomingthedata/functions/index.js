@@ -18,6 +18,8 @@ const path = require('path')
 const session = require('express-session')
 const ejs = require('ejs')
 
+const FirestoreStore = require('firestore-store')(session);
+
 const app = express()
 app.engine('ejs', ejs.renderFile);
 app.set("view engine", "ejs")
@@ -25,6 +27,7 @@ app.set("views", "./views")
 
 app.use('/public', express.static('./public'))
 app.use(express.urlencoded({extended: true}))
+
 
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
@@ -38,11 +41,23 @@ const db = getFirestore();
 
 // sessions
 
-app.use(session({
-    secret: 'secret_key',
-    resave: false,
-    saveUninitialized: false
-}));
+app.use(
+    session({
+        store: new FirestoreStore({
+            database: firebase.firestore()
+        }),
+        name: '__session',
+        secret: "gtdataseumisfun",
+        resave: true,
+        saveUninitialized: true,
+        cookie: {
+            expires: 4 * 60 * 60 * 1000, // 4 hours in milliseconds
+            maxAge: 4 * 60 * 60 * 1000,
+            secure: false,
+            httpOnly: false
+        }
+    })
+);
 
 // Function to fetch and return visitors data
 async function displayVisitors() {
@@ -62,7 +77,7 @@ async function displayVisitors() {
 // check if session exists
 const checkSession = (req, res, next) => {
     if (!req.session.sessionId) {
-        res.redirect('/');
+        res.redirect('/start');
     } else {
         next();
     }
@@ -101,20 +116,52 @@ function generateSessionId() {
 app.get('/start', (req, res)=>{
     const sessionId = req.session.sessionId || generateSessionId();
     req.session.sessionId = sessionId;
+    req.session.exhibitsvisited = {
+        'oceans': false,
+        'airquality': false,
+        'socialdata': false,
+        'gridgame': false,
+        'acid': false,
+        'datamap': false
+    }
     res.redirect('/scanner');
 })
 
 // scanner screen
-app.get('/scanner', (req, res)=>{
-    const sessionId = req.session.sessionId || generateSessionId();
-    req.session.sessionId = sessionId;
+app.get('/scanner', checkSession, (req, res)=>{
+    const sessionId = req.session.sessionId;
     res.render("pages/scanner", { sessionId });
 })
 
-// finish experience screen
+// experience summary screen
+app.get('/summary', checkSession, (req, res)=>{
+    const sessionId = req.session.sessionId;
+    res.render("pages/checklist");
+})
+
+// finish experience screen - show id and allow to view data profile or add to map
 app.get('/finish', checkSession, (req, res)=>{
-    // get session info then send to screen to be displayed
-    res.render("pages/finish");
+    const sessionId = req.session.sessionId;
+
+    // store info to firebase or update or whatever is needed
+
+    res.render("pages/finish", { sessionId });
+})
+
+// display profile
+app.get('/profile/:id', checkSession, (req, res)=>{
+
+    // pull info from firebase for display
+
+    res.render("pages/profile");
+})
+
+// add profile to map
+app.get('/map/add/:id', checkSession, (req, res)=>{
+
+    // pull info from firebase
+
+    res.render("pages/dotbuilder");
 })
 
 // end experience
@@ -129,11 +176,12 @@ app.get('/end', checkSession, (req, res)=>{
 })
 
 const desctosurvey = {
-    'social_sustainability': 'experience1',
-    'ocean_accessibility': 'experience2',
-    'nature_preservation': 'experience3',
-    'public_parks': 'experience4',
-    'flora_findings': 'experience5',
+    'accessible_oceans': 'oceans',
+    'air_quality_data_literacy': 'airquality',
+    'atlanta_arrest_data': 'socialdata',
+    'electrical_grid_game': 'gridgame',
+    'acid_rain': 'acid',
+    'the_dataseum_data_map': 'datamap'
 };
 
 // nav to survey prompt 
@@ -144,11 +192,30 @@ app.get('/survey/:description', (req, res) => {
     if (desctosurvey.hasOwnProperty(description)) {
         const fileName = desctosurvey[description];
         functions.logger.info("File name:", fileName);
-        res.render("pages/" + fileName, { description: description });
+
+        var sessionId;
+        // make new session if session doesnt exist
+        if (!req.session.sessionId) {
+            sessionId = generateSessionId();
+            req.session.sessionId = sessionId;
+            req.session.exhibitsvisited = {
+                'oceans': false,
+                'airquality': false,
+                'socialdata': false,
+                'gridgame': false,
+                'acid': false,
+                'datamap': false
+            }
+        } else {
+            sessionId = req.session.sessionId || generateSessionId();
+        }
+
+        req.session.exhibitsvisited[fileName] = true;
+        res.render("pages/experiences/" + fileName, {sessionId, completed});
     } else {
         functions.logger.info("Unrecognized description:", description); // Print unrecognized description
         // unrecognized
-        res.redirect('/');
+        res.redirect('/scanner');
     }
 
 });

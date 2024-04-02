@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Your Dataseum Experience | GT Dataseum</title>
+        <%- include('../../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/info.css">
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content" class="center">
+            <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
+            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+
+        
+            <h2>Your Dataseum experience:</h2>
+            <div class="exhibit-list">
+                <% Object.entries(exhibitsVisited).forEach(([exhibit, visited]) => { %>
+                    <div class="exhibit-item">
+                        <img src="/img/exhibit/<%= exhibit %>.png" alt="<%= exhibit %>">
+                        <p><%= exhibit %></p>
+                        <p><%= visited ? 'Visited' : 'Not visited' %></p>
+                    </div>
+                <% }); %>
+            </div>
+
+            <a href="/finish" class="button red">Complete your experience</a>
+
+            <hr>
+        </div>
+    </body>
+</html>

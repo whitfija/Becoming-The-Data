@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>You have become the data! | GT Dataseum</title>
+        <%- include('../../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/info.css">
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content" class="center">
+            <div id="tilebar1"></div>
+            <div class="wrapup">
+                <p>Thank you for visiting the Dataseum, we hope you enjoyed getting a a new perspective about our environment and your relationship to it.</p>
+                <p>As you leave this space, continue to reflect on your impact and connection to your environment and how your can use that power.</p>
+                <a href="/profile/<%= sessionId %>" class="button blue">View your data profile</a>
+                <a href="/dotbuilder" class="button red">Add your data to the map</a>
+            </div>
+            <div id="tilebar2"></div>
+        </div>
+    </body>
+</html>

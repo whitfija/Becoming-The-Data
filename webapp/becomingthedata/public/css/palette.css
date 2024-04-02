@@ -11,3 +11,43 @@
     --river-blue: #207DCA;
     --red-clay: #7F3206;
 }
+
+.orange {
+    background-color: var(--fall-orange);
+    color: var(--ash-black);
+}
+
+.peach {
+    background-color: var(--georgia-peach);
+    color: var(--ivory-cream);
+}
+
+.red {
+    background-color: var(--red-clay);
+    color: var(--ivory-cream);
+}
+
+.blue {
+    background-color: var(--river-blue);
+    color: var(--ivory-cream);
+}
+
+.lightblue {
+    background-color: var(--mist-blue);
+    color: var(--ash-black);
+}
+
+.green {
+    background-color: var(--grass-green);
+    color: var(--ash-black);
+    color: var(--ivory-cream);
+}
+
+.darkgreen {
+    background-color: var(--moss-green);
+    color: var(--ash-black);
+}
+.yellow {
+    background-color: var(--sunshine-yellow);
+    color: var(--ash-black);
+}

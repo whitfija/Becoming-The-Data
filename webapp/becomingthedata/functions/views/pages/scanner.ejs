@@ -11,7 +11,9 @@
 
     <body>
         <div id="content" class="center" style="height: 95vh;">
-            <h1 class="title3">Session: <%= sessionId %></h1>
+            <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
+            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+
             <h1 class="title1">Scan a QR code to continue.</h1>
             <div id="message"></div>
             <video id="scanner"></video>

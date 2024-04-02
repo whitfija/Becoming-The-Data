@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Exhibit: Social Sustainability. | GT Dataseum</title>
+        <title>MR Dataseum Map | GT Dataseum</title>
         <%- include('../../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
     </head>
 
     <body>
-        <div id="content" class="center" style="height: 95vh;">
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content" class="center">
+            <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
+            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+
             <div class="survey">
-                <h1 class="title">Exhibit: Social Sustainability</h1>
+                <h1 class="title">Exhibit: MR Interactive Dataseum Map</h1>
                 <img src="/img/tile8.png" alt="Large Image" class="large-image">
-                
-                <div class="spacer"></div>
 
                 <div class="quiz">
-                    <h2 class="prompt">Question: What Zipcode Do You Live In?</h2>
+                    <h2 class="prompt">Question: [prompt]</h2>
                     <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
                     <a href="/start" class="button yellow" >Submit response.</a>
                 </div>
             </div>
+
+            <hr>
         </div>
     </body>
 </html>

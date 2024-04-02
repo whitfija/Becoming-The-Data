@@ -18,6 +18,14 @@ body {
     margin: 0;
 }
 
+hr {
+    border: none;
+    height: 1px; 
+    background-color: var(--ash-black);
+    width: 60%;
+    margin: 20px 0; 
+}
+
 a {
     color: var(--river-blue);
 }
@@ -51,7 +59,7 @@ h1 {
     font-size: 26px;
     font-weight: bold;
     cursor: pointer;
-    border: 2px solid transparent; /* Add transparent border */
+    border: 2px solid transparent; 
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -61,21 +69,6 @@ h1 {
     color: var(--ash-black);
     background-color: var(--ivory-cream);
     border-color: var(--ash-black);
-}
-
-.orange {
-    background-color: var(--fall-orange);
-    color: var(--ivory-cream);
-}
-
-.blue {
-    background-color: var(--mist-blue);
-    color: var(--ivory-cream);
-}
-
-.yellow {
-    background-color: var(--sunshine-yellow);
-    color: var(--river-blue);
 }
 
 #titles {
@@ -142,10 +135,9 @@ h1 {
 }
 
 .desc {
-    width: 70%;
+    width: 80%;
     max-width: 1000px;
-    line-height: 48px;
-    font-size: 40px; 
+    font-size: 20px; 
     margin: 100px auto;
     justify-content: center;
     align-items: center;
@@ -153,33 +145,37 @@ h1 {
 }
 
 .desc h1 {
-    font-size: 60px;
+    font-size: 40px;
+    line-height: 48px;
 }
 
 .desc img {
-    width: 60%;
+    width: 100%;
     margin: 20px 0;
 }
 
 .desc a {
     word-wrap: break-word;
+}
 
+.desc p {
+    font-size: 20px;
 }
 
 /* Mobile-specific CSS */
 @media only screen and (max-width: 600px) {
     
     .button {
-        font-size: 18px; /* Adjust button font size for mobile */
-        padding: 10px 20px; /* Adjust button padding for mobile */
+        font-size: 18px; 
+        padding: 10px 20px; 
     }
 
     .logo img {
-        width: 100px; /* Adjust logo size for mobile */
+        width: 100px; 
     }
 
     .title2 {
-        font-size: 75px; /* Adjust title font size for mobile */
+        font-size: 75px; 
     }
 
     .title2 img{
@@ -187,7 +183,7 @@ h1 {
     }
 
     #titles {
-        margin-top: 100px; /* Adjust title margin-top for mobile */
+        margin-top: 100px; 
     }
 }
 
@@ -198,11 +194,11 @@ h1 {
     }
 
     .title1 {
-        font-size: 33px; /* Adjust title font size for mobile */
+        font-size: 33px; 
     }
 
     .title2 {
-        font-size: 90px; /* Adjust title font size for mobile */
+        font-size: 90px; 
     }
 
     .title2 img{
@@ -210,12 +206,12 @@ h1 {
     }
 
     .title3 {
-        font-size: 20px; /* Adjust title font size for mobile */
+        font-size: 20px;
     }
 
     #titles {
         margin-top: 150px;
-        margin-bottom: 80px; /* Adjust title margin-top for mobile */
+        margin-bottom: 80px;
     }
 }
 
@@ -223,6 +219,10 @@ h1 {
     body {
         background-color: var(--ash-black);
         color: var(--ivory-cream);
+    }
+
+    hr {
+        background-color: var(--ivory-cream);
     }
 
     h1 {
@@ -235,7 +235,7 @@ h1 {
 
     
     .title2 {
-        font-size: 50px; /* Adjust title font size for mobile */
+        font-size: 50px; 
     }
 
     .title2 img{
@@ -256,10 +256,10 @@ h1 {
     }
 
     .logo {
-        top: 7vh; 
+        top: 2vh; 
     }
 
     .logo img {
-        width: 70px; /* Adjust logo size for mobile */
+        width: 70px;
     }
 }
