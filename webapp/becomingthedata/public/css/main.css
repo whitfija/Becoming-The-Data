@@ -77,7 +77,6 @@ h1 {
     display: flex;
     flex-direction: column;
     margin: 50px;
-    margin-top: 150px;
 }
 
 .title1 {
@@ -162,6 +161,46 @@ h1 {
     font-size: 20px;
 }
 
+.orange {
+    background-color: var(--fall-orange);
+    color: var(--ash-black);
+}
+
+.peach {
+    background-color: var(--georgia-peach);
+    color: var(--ivory-cream);
+}
+
+.red {
+    background-color: var(--red-clay);
+    color: var(--ivory-cream);
+}
+
+.blue {
+    background-color: var(--river-blue);
+    color: var(--ivory-cream);
+}
+
+.lightblue {
+    background-color: var(--mist-blue);
+    color: var(--ash-black);
+}
+
+.green {
+    background-color: var(--grass-green);
+    color: var(--ash-black);
+    color: var(--ivory-cream);
+}
+
+.darkgreen {
+    background-color: var(--moss-green);
+    color: var(--ash-black);
+}
+.yellow {
+    background-color: var(--sunshine-yellow);
+    color: var(--ash-black);
+}
+
 /* Mobile-specific CSS */
 @media only screen and (max-width: 600px) {
     
@@ -210,7 +249,7 @@ h1 {
     }
 
     #titles {
-        margin-top: 150px;
+        margin-top: 100px;
         margin-bottom: 80px;
     }
 }
@@ -227,10 +266,6 @@ h1 {
 
     h1 {
         color: var(--ivory-cream);
-    }
-
-    .button {
-        color: var(--ash-black);
     }
 
     

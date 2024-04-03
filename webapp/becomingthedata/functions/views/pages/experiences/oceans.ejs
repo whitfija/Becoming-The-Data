@@ -22,11 +22,12 @@
                 <div class="quiz">
                     <h2 class="prompt">Question: [prompt]</h2>
                     <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a href="/start" class="button blue" >Submit response.</a>
+                    <a onclick="submitSurveyResponse('oceans', document.getElementById('answer').value.trim())" class="button blue" >Submit response.</a>
                 </div>
             </div>
 
             <hr>
         </div>
+        
     </body>
 </html>

@@ -136,7 +136,8 @@ app.get('/scanner', checkSession, (req, res)=>{
 // experience summary screen
 app.get('/summary', checkSession, (req, res)=>{
     const sessionId = req.session.sessionId;
-    res.render("pages/checklist");
+    const exhibitsVisited = req.session.exhibitsvisited;
+    res.render("pages/checklist", { sessionId, exhibitsVisited });
 })
 
 // finish experience screen - show id and allow to view data profile or add to map
@@ -149,7 +150,15 @@ app.get('/finish', checkSession, (req, res)=>{
 })
 
 // display profile
-app.get('/profile/:id', checkSession, (req, res)=>{
+app.get('/profile', checkSession, (req, res)=>{
+
+    // pull info from firebase for display
+
+    res.render("pages/profile");
+})
+
+// display profile
+app.get('/profile/:id', (req, res)=>{
 
     // pull info from firebase for display
 
@@ -207,11 +216,9 @@ app.get('/survey/:description', (req, res) => {
                 'datamap': false
             }
         } else {
-            sessionId = req.session.sessionId || generateSessionId();
+            sessionId = req.session.sessionId;
         }
-
-        req.session.exhibitsvisited[fileName] = true;
-        res.render("pages/experiences/" + fileName, {sessionId, completed});
+        res.render("pages/experiences/" + fileName, {sessionId});
     } else {
         functions.logger.info("Unrecognized description:", description); // Print unrecognized description
         // unrecognized
@@ -221,9 +228,18 @@ app.get('/survey/:description', (req, res) => {
 });
 
 // save survey response
-app.get('/survey/submit/', checkSession, (req, res) => {
-    // store data into firebase by session info
-    res.redirect('/');
+app.post('/survey/submit', (req, res) => {
+    // TODO store data into firebase by session info
+
+    const { exhibitName, data } = req.body;
+
+    // update session information for the exhibit
+    if (req.session.exhibitsvisited && req.session.exhibitsvisited.hasOwnProperty(exhibitName)) {
+        req.session.exhibitsvisited[exhibitName] = true;
+        res.status(200).send('Survey response submitted successfully.');
+    } else {
+        res.status(400).send('Invalid exhibit name.');
+    }
 });
 
 // unknown
