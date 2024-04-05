@@ -23,8 +23,8 @@
                 <% Object.entries(exhibitsVisited).forEach(([exhibit, visited]) => { %>
                     <div class="exhibit-item <%= visited ? 'visited' : 'not-visited' %>">
                         <img src="/img/exhibit/<%= exhibit %>.png" alt="<%= exhibit %>">
-                        <p><%= exhibit %></p>
-                        <p><%= visited ? 'Visited' : 'Not visited' %></p>
+                        <p><%= exhibitNames[exhibit] %></p>
+                        <p class="<%= visited ? 'visited-text' : 'not-visited-text' %>"><%= visited ? 'Visited' : 'Not visited' %></p>
                     </div>
                 <% }); %>
             </div>

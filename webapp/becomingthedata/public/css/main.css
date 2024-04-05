@@ -189,12 +189,11 @@ h1 {
 .green {
     background-color: var(--grass-green);
     color: var(--ash-black);
-    color: var(--ivory-cream);
 }
 
 .darkgreen {
     background-color: var(--moss-green);
-    color: var(--ash-black);
+    color: var(--ivory-cream)
 }
 .yellow {
     background-color: var(--sunshine-yellow);

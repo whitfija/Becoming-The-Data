@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Atlanta Map | GT Dataseum</title>
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/map.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content full">
+            <div id="map">
+                <iframe width="95%" height="95%" src="https://api.maptiler.com/maps/7fa13f10-7149-45f2-ae8c-154f26e2cc1e/?key=U2tGYk0Y3xdO1ag6fz8M#12.7/33.75405/-84.38089" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('map').setView([33.749, -84.388], 11); // Atlanta coordinates
+            
+            // dots
+            
+            <% dots.forEach(dot => { %>
+                var dotMarker = L.circleMarker([<%= dot.latitude %>, <%= dot.longitude %>], {
+                    color: '#<%= dot.colorHex %>',
+                    fillColor: '#<%= dot.colorHex %>',
+                    fillOpacity: 1,
+                    radius: 8
+                }).addTo(map);
+
+                dotMarker.bindPopup("<%= dot.sessionId %>"); // You can change dot.name to any property of your dot object that contains the popup content
+            <% }); %>
+        });
+    
+        </script>
+    </body>
+</html>

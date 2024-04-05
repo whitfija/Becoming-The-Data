@@ -15,6 +15,7 @@
             <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
 
             <div class="info">
+                <img src="/img/personalities/<%= visitorData.group %>.png">
                 <div class="section">
 
                 </div>
@@ -33,8 +34,8 @@
 
             </div>
             
-            <a href="/finish" class="button yellow">Share your profile</a>
-            <a href="/finish" class="button red">Add your profile to the map of Atlanta</a>
+            <a href="#" class="button yellow">Share your profile</a>
+            <a href="/dotbuilder/<%= visitorData.sessionId %>" class="button red">Add your data to the map</a>
 
             <hr>
         </div>
