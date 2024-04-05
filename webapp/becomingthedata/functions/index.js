@@ -7,40 +7,35 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
+
+/* ------------------------------------------ setup ------------------------------------------ */
+
+// imports
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
-
 const functions = require("firebase-functions");
 const firebase = require("firebase-admin");
-
 const express = require('express')
 const path = require('path')
 const session = require('express-session')
 const ejs = require('ejs')
-
 const FirestoreStore = require('firestore-store')(session);
-
 const app = express()
+
+// express
 app.engine('ejs', ejs.renderFile);
 app.set("view engine", "ejs")
 app.set("views", "./views")
-
 app.use('/public', express.static('./public'))
 app.use(express.urlencoded({extended: true}))
-
-
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
 
 // firebase
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
-
 initializeApp();
 const db = getFirestore();
 
-// sessions
-
+// firebase session setup
 app.use(
     session({
         store: new FirestoreStore({
@@ -59,7 +54,49 @@ app.use(
     })
 );
 
-// Function to fetch and return visitors data
+/* ------------------------------------------ global variables & useful constants ------------------------------------------ */
+
+let dots = [];
+async function initializeDots() {
+    try {
+        const snapshot = await db.collection('dots').get();
+        dots = snapshot.docs.map(doc => doc.data());
+    } catch (error) {
+        console.error('Error fetching dots:', error);
+    }
+}
+initializeDots();
+
+const desctosurvey = {
+    'accessible_oceans': 'oceans',
+    'air_quality_data_literacy': 'airquality',
+    'atlanta_arrest_data': 'socialdata',
+    'electrical_grid_game': 'gridgame',
+    'acid_rain': 'acid',
+    'the_dataseum_data_map': 'datamap'
+};
+
+// check if session exists
+const checkSession = (req, res, next) => {
+    if (!req.session.sessionId) {
+        res.redirect('/start');
+    } else {
+        next();
+    }
+};
+
+const exhibitNames = {
+    'oceans': 'Accessible Oceans',
+    'airquality': 'Air Quality Data Literacy',
+    'socialdata': 'Atlanta Arrest Data',
+    'gridgame': 'Electrical Grid Management',
+    'acid': 'Acid Rain',
+    'datamap': ' MR Interactive Dataseum Map'
+};
+
+/* ------------------------------------------ functions ------------------------------------------ */
+
+// fetch and return all visitors data
 async function displayVisitors() {
     try {
         const snapshot = await db.collection('visitors').get();
@@ -74,50 +111,89 @@ async function displayVisitors() {
     }
 }
 
-// get visitor data for sessionId
+// get visitor data for one visitor based on sessionId
 function getVisitorData(sessionId) {
     return new Promise((resolve, reject) => {
-        // Reference to the visitor document in Firestore
         const visitorRef = db.collection('visitors').doc(sessionId);
-
-        // Fetch visitor document
         visitorRef.get()
             .then(doc => {
                 if (!doc.exists) {
-                    // Visitor document does not exist
                     reject(new Error('Visitor data not found'));
                 } else {
-                    // Visitor document found, resolve with visitor data
                     resolve(doc.data());
                 }
             })
             .catch(error => {
-                // Error fetching visitor document
                 reject(error);
             });
     });
 }
 
-// check if session exists
-const checkSession = (req, res, next) => {
-    if (!req.session.sessionId) {
-        res.redirect('/start');
-    } else {
-        next();
-    }
-};
-
-let dots = [];
-async function initializeDots() {
-    try {
-        const snapshot = await db.collection('dots').get();
-        dots = snapshot.docs.map(doc => doc.data());
-    } catch (error) {
-        console.error('Error fetching dots:', error);
-        // Handle error
-    }
+// get dots from firestore
+async function fetchDotsFromFirestore() {
+    const dotsRef = db.collection('dots');
+    const snapshot = await dotsRef.get();
+    const dots = [];
+    snapshot.forEach(doc => {
+        const dotData = doc.data();
+        dots.push(dotData);
+    });
+    return dots;
 }
-initializeDots();
+
+// check if dot exists for given sessionId
+function checkDotExists(sessionId) {
+    return new Promise((resolve, reject) => {
+        const dotRef = db.collection('dots').where('sessionId', '==', sessionId);
+        dotRef.get()
+            .then(snapshot => {
+                const dotExists = !snapshot.empty;
+                resolve(dotExists);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// add new dot to db and dots global var
+function addDot(sessionId, colorHex, group) {
+    return new Promise((resolve, reject) => {
+        const timestamp = Date.now();
+    
+        // default coordinates around Atlanta with random variation
+        const atlantaLongitude = 33.749;
+        const atlantaLatitude = -84.388;
+        const variation = 0.08;
+        const latitude = atlantaLatitude + (Math.random() * variation * 2 - variation);
+        const longitude = atlantaLongitude + (Math.random() * variation * 2 - variation);
+    
+        // Dot data
+        const dotData = {
+            sessionId: sessionId, group: group, colorHex: colorHex, timestamp: timestamp, longitude: longitude, latitude: latitude
+        };
+    
+        // add the dot to the Firestore collection
+        db.collection('dots').add(dotData)
+        .then((docRef) => {
+            resolve(docRef.id);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+// generate new sessionId
+function generateSessionId() {
+    const timestamp = Date.now().toString(36); // convert current timestamp to base36 string
+    const randomString = Math.random().toString(36).substring(2, 8); // generate a random string of length 6
+    return timestamp + randomString;
+}
+
+/* ------------------------------------------ routes ------------------------------------------ */
+
+/* --------------------- static pages --------------------- */
 
 // index
 app.get('/', (req, res)=>{
@@ -129,36 +205,6 @@ app.get('/about', (req, res)=>{
     res.render("pages/about");
 })
 
-
-async function fetchDotsFromFirestore() {
-    const dotsRef = db.collection('dots');
-    
-    // Fetch all dots from Firestore
-    const snapshot = await dotsRef.get();
-    
-    // Parse dot data from Firestore snapshot
-    const dots = [];
-    snapshot.forEach(doc => {
-        const dotData = doc.data();
-        dots.push(dotData);
-    });
-
-    return dots;
-}
-// map
-app.get('/map', async (req, res) => {
-    try {
-        // Fetch dot data from Firestore
-        dots = await fetchDotsFromFirestore(); // Implement this function to fetch dots from Firestore
-
-        // Render the map page with dot data
-        res.render("pages/map", { dots });
-    } catch (error) {
-        console.error('Error fetching dots:', error);
-        res.status(500).send('Error fetching dots');
-    }
-});
-
 // data test
 app.get('/data', async (req, res)=>{
     const visitors = await displayVisitors();
@@ -166,13 +212,7 @@ app.get('/data', async (req, res)=>{
 })
 
 
-// --------------------- experience ---------------------
-
-function generateSessionId() {
-    const timestamp = Date.now().toString(36); // convert current timestamp to base36 string
-    const randomString = Math.random().toString(36).substring(2, 8); // generate a random string of length 6
-    return timestamp + randomString;
-}
+/* --------------------- experience navigation (starting, scanner, summary, stopping) --------------------- */
 
 // start experience, build session if needed, navigate to scanner
 app.get('/start', (req, res)=>{
@@ -190,22 +230,8 @@ app.get('/start', (req, res)=>{
             group: assignedPersonality,
             starttime: startTime,
             endtime: null,
-            exhibitsvisited: {
-                'oceans': false,
-                'airquality': false,
-                'socialdata': false,
-                'gridgame': false,
-                'acid': false,
-                'datamap': false
-            },
-            exhibitinfo: {
-                'oceans': '',
-                'airquality': '',
-                'socialdata': '',
-                'gridgame': '',
-                'acid': '',
-                'datamap': ''
-            }
+            exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false},
+            exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': ''}
         };
 
         visitorRef.set(visitorData)
@@ -229,15 +255,6 @@ app.get('/scanner', checkSession, (req, res)=>{
     res.render("pages/scanner", { sessionId });
 })
 
-
-const exhibitNames = {
-    'oceans': 'Accessible Oceans',
-    'airquality': 'Air Quality Data Literacy',
-    'socialdata': 'Atlanta Arrest Data',
-    'gridgame': 'Electrical Grid Management',
-    'acid': 'Acid Rain',
-    'datamap': ' MR Interactive Dataseum Map'
-};
 // experience summary screen
 app.get('/summary', checkSession, (req, res)=>{
     const sessionId = req.session.sessionId;
@@ -283,6 +300,103 @@ app.get('/finish', checkSession, (req, res)=>{
         });
 })
 
+// end experience
+app.get('/end', checkSession, (req, res)=>{
+    // end session
+    const sessionId = req.session.sessionId;
+    delete req.session.sessionId;
+
+    res.redirect(`/summary/${sessionId}`);
+})
+
+/* --------------------- survey info (viewing surveys and storing response) --------------------- */
+
+// nav to survey prompt 
+app.get('/survey/:description', async (req, res) => {
+    const description = req.params.description; 
+    functions.logger.info("Description:", description);
+    
+    if (desctosurvey.hasOwnProperty(description)) {
+        const fileName = desctosurvey[description];
+        functions.logger.info("File name:", fileName);
+        var sessionId;
+
+        // make new session if session doesnt exist
+        if (!req.session.sessionId) {
+            sessionId = generateSessionId();
+            req.session.sessionId = sessionId;
+
+            // build visitor entry
+            const visitorRef = db.collection('visitors').doc(sessionId);
+            const startTime = new Date();
+            const assignedPersonality = Math.floor(Math.random() * 8) + 1; // random number between 1 and 8
+            const visitorData = {
+                sessionId: sessionId, active: true, group: assignedPersonality, starttime: startTime, endtime: null,
+                exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false},
+                exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': ''}
+            };
+
+            visitorRef.set(visitorData)
+                .then(() => {
+                    console.log('Visitor entry created successfully.');
+                })
+                .catch(error => {
+                    console.error('Error creating visitor entry:', error);
+                    res.status(500).send('Error creating visitor entry.');
+                });
+        } 
+        sessionId = req.session.sessionId;
+
+        // update visitor's entry
+        const visitorRef = db.collection('visitors').doc(sessionId);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            const doc = await visitorRef.get();
+            if (!doc.exists) {
+                throw new Error('Visitor document does not exist');
+            }
+
+            const exhibitName = desctosurvey[description];
+            const exhibitsvisited = doc.data().exhibitsvisited || {};
+            exhibitsvisited[exhibitName] = true;
+
+            await visitorRef.update({
+                exhibitsvisited: exhibitsvisited
+            });
+
+            res.render("pages/experiences/" + fileName, { sessionId });
+        } catch (error) {
+            functions.logger.error("Error updating visitor's entry:", error);
+            res.status(500).send("Error updating visitor's entry");
+        }
+    } else {
+        // unrecognized
+        functions.logger.info("Unrecognized description:", description);
+        res.redirect('/scanner');
+    }
+});
+
+// save survey response
+app.post('/survey/submit', checkSession, (req, res) => {
+    const { exhibitName, data } = req.body;
+    const sessionId = req.session.sessionId;
+
+    const visitorRef = db.collection('visitors').doc(sessionId);
+    visitorRef.update({
+        [`exhibitinfo.${exhibitName}`]: data
+    })
+    .then(() => {
+        res.status(200).send('Survey response submitted successfully.');
+    })
+    .catch(error => {
+        console.error('Error updating exhibitinfo:', error);
+        res.status(500).send('Failed to submit survey response.');
+    });
+});
+
+/* --------------------- post-experience (profile, dots, map) --------------------- */
+
 // display profile
 app.get('/profile/:id', (req, res)=>{
     const sessionId = req.params.id;
@@ -325,53 +439,6 @@ app.get('/dotbuilder/:id', (req, res)=>{
     });
 })
 
-function checkDotExists(sessionId) {
-    return new Promise((resolve, reject) => {
-        const dotRef = db.collection('dots').where('sessionId', '==', sessionId);
-        dotRef.get()
-            .then(snapshot => {
-                const dotExists = !snapshot.empty;
-                resolve(dotExists);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
-}
-
-function addDot(sessionId, colorHex, group) {
-    return new Promise((resolve, reject) => {
-        const timestamp = Date.now();
-    
-        // default coordinates around Atlanta with random variation
-        const atlantaLongitude = 33.749;
-        const atlantaLatitude = -84.388;
-        const variation = 0.08;
-        const latitude = atlantaLatitude + (Math.random() * variation * 2 - variation);
-        const longitude = atlantaLongitude + (Math.random() * variation * 2 - variation);
-    
-    
-        // Dot data
-        const dotData = {
-            sessionId: sessionId,
-            group: group,
-            colorHex: colorHex,
-            timestamp: timestamp,
-            longitude: longitude,
-            latitude: latitude
-        };
-    
-        // add the dot to the Firestore collection
-        db.collection('dots').add(dotData)
-        .then((docRef) => {
-            resolve(docRef.id);
-        })
-        .catch(error => {
-            reject(error);
-        });
-    });
-}
-
 // place dot on wanted position on map
 app.get('/map/add/:id', async (req, res)=>{
     const sessionId = req.params.id; 
@@ -389,14 +456,12 @@ app.get('/map/add/:id', async (req, res)=>{
             const color = req.query.color || 'error';
             const dotId = await addDot(sessionId, color, group);
 
-            // Wait for a short delay to allow Firestore to propagate the changes
+            // delay so changes happen
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // get added dot from the Firebase database
+            // get added dot from the Firebase database, store in dots
             const addedDotSnapshot = await db.collection('dots').doc(dotId).get();
             const addedDotData = addedDotSnapshot.data();
-
-            // Ensure the snapshot contains valid data before pushing it
             if (addedDotData) {
                 dots.push(addedDotData);
             } else {
@@ -417,136 +482,23 @@ app.get('/api/dots', (req, res) => {
     res.json(dots);
 });
 
-// end experience
-app.get('/end', checkSession, (req, res)=>{
-    // store info to firebase
-
-    // end session
-    const sessionId = req.session.sessionId;
-    delete req.session.sessionId;
-
-    res.redirect(`/summary/${sessionId}`);
-})
-
-const desctosurvey = {
-    'accessible_oceans': 'oceans',
-    'air_quality_data_literacy': 'airquality',
-    'atlanta_arrest_data': 'socialdata',
-    'electrical_grid_game': 'gridgame',
-    'acid_rain': 'acid',
-    'the_dataseum_data_map': 'datamap'
-};
-
-// nav to survey prompt 
-app.get('/survey/:description', async (req, res) => {
-    const description = req.params.description; 
-    functions.logger.info("Description:", description);
-    
-    if (desctosurvey.hasOwnProperty(description)) {
-        const fileName = desctosurvey[description];
-        functions.logger.info("File name:", fileName);
-        var sessionId;
-
-        // make new session if session doesnt exist
-        if (!req.session.sessionId) {
-            sessionId = generateSessionId();
-            req.session.sessionId = sessionId;
-
-            // build visitor entry
-            const visitorRef = db.collection('visitors').doc(sessionId);
-            const startTime = new Date();
-            const assignedPersonality = Math.floor(Math.random() * 8) + 1; // random number between 1 and 8
-            const visitorData = {
-                sessionId: sessionId,
-                active: true,
-                group: assignedPersonality,
-                starttime: startTime,
-                endtime: null,
-                exhibitsvisited: {
-                    'oceans': false,
-                    'airquality': false,
-                    'socialdata': false,
-                    'gridgame': false,
-                    'acid': false,
-                    'datamap': false
-                },
-                exhibitinfo: {
-                    'oceans': '',
-                    'airquality': '',
-                    'socialdata': '',
-                    'gridgame': '',
-                    'acid': '',
-                    'datamap': ''
-                }
-            };
-
-            visitorRef.set(visitorData)
-                .then(() => {
-                    console.log('Visitor entry created successfully.');
-                })
-                .catch(error => {
-                    console.error('Error creating visitor entry:', error);
-                    res.status(500).send('Error creating visitor entry.');
-                });
-
-
-        } 
-
-        sessionId = req.session.sessionId;
-
-        //update visitor's entry
-        const visitorRef = db.collection('visitors').doc(sessionId);
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            const doc = await visitorRef.get();
-            if (!doc.exists) {
-                throw new Error('Visitor document does not exist');
-            }
-
-            const exhibitName = desctosurvey[description];
-            const exhibitsvisited = doc.data().exhibitsvisited || {};
-            exhibitsvisited[exhibitName] = true;
-
-            await visitorRef.update({
-                exhibitsvisited: exhibitsvisited
-            });
-
-            res.render("pages/experiences/" + fileName, { sessionId });
-        } catch (error) {
-            functions.logger.error("Error updating visitor's entry:", error);
-            res.status(500).send("Error updating visitor's entry");
-        }
-    } else {
-        // unrecognized
-        functions.logger.info("Unrecognized description:", description);
-        res.redirect('/scanner');
+// map
+app.get('/map', async (req, res) => {
+    try {
+        dots = await fetchDotsFromFirestore();
+        res.render("pages/map", { dots });
+    } catch (error) {
+        console.error('Error fetching dots:', error);
+        res.status(500).send('Error fetching dots');
     }
-
 });
 
-// save survey response
-app.post('/survey/submit', checkSession, (req, res) => {
-    const { exhibitName, data } = req.body;
-    const sessionId = req.session.sessionId;
+/* --------------------- defaults and errors  ---------------------*/
 
-    const visitorRef = db.collection('visitors').doc(sessionId);
-    visitorRef.update({
-        [`exhibitinfo.${exhibitName}`]: data
-    })
-    .then(() => {
-        res.status(200).send('Survey response submitted successfully.');
-    })
-    .catch(error => {
-        console.error('Error updating exhibitinfo:', error);
-        res.status(500).send('Failed to submit survey response.');
-    });
-});
-
-// unknown
+// unknown - redirect to home
 app.get('*', (req, res) => {
     res.redirect('/');
 });
 
-
+/* ------------------------------------------ end ------------------------------------------ */
 exports.app = functions.https.onRequest(app);
