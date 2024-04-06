@@ -1,57 +1,112 @@
 @font-face {
     font-family: 'Space_Grotesk';
-    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf') format('truetype');
+    src: url('/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf') format('truetype');
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Space_Grotesk';
-    src: url('/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf') format('truetype');
+    src: url('/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf') format('truetype');
     font-weight: bold;
 }
 
 body {
     font-family: 'Space_Grotesk', sans-serif;
     font-size: larger;
-    background-color: #F0EADE;
+    background-color: var(--ivory-cream);
+    color: var(--ash-black);
+    margin: 0;
+}
+
+hr {
+    border: none;
+    height: 1px; 
+    background-color: var(--ash-black);
+    width: 60%;
+    margin: 20px 0; 
+}
+
+a {
+    color: var(--river-blue);
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #content {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .center {
     align-items: center;
     justify-content: center;
-    height: 98vh;
+    text-align: center;
     width: 100%;
 }
 
 .button {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #22201C;
-    color: #F0EADE;
+    background-color: var(--ash-black);
+    color: var(--ivory-cream);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 26px;
     font-weight: bold;
     cursor: pointer;
-    border: 2px solid transparent; /* Add transparent border */
+    border: 2px solid transparent; 
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
 .button:hover {
-    color: #22201C;
-    background-color: #F0EADE;
-    border-color: #22201C;
+    color: var(--ash-black);
+    background-color: var(--ivory-cream);
+    border-color: var(--ash-black);
+}
+
+#titles {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+}
+
+.title1 {
+    font-weight: bold;
+    font-size: 55px;
+}
+
+.title2 {
+    font-weight: bold;
+    font-size: 130px;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: inherit;
+}
+
+.title2 img{
+    height: 130px;
+}
+
+.title3 {
+    font-size: 35px;
 }
 
 .logo {
     position: fixed;
-    top: 20px; 
+    bottom: 2vh; 
     left: 20px; 
-    opacity: 0.7; 
+    opacity: 0.5; 
     z-index: 9999; 
 }
 
@@ -62,4 +117,181 @@ body {
 
 .textend {
     padding-left: 30px;
+}
+
+#te1 {
+    display: block;
+}
+
+#te2 {
+    display: none;
+}
+
+.full {
+    height: 95vh;
+}
+
+#message {
+    color: var(--grass-green);
+}
+
+.desc {
+    width: 80%;
+    max-width: 1000px;
+    font-size: 20px; 
+    margin: 100px auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.desc h1 {
+    font-size: 40px;
+    line-height: 48px;
+}
+
+.desc img {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.desc a {
+    word-wrap: break-word;
+}
+
+.desc p {
+    font-size: 20px;
+}
+
+.orange {
+    background-color: var(--fall-orange);
+    color: var(--ash-black);
+}
+
+.peach {
+    background-color: var(--georgia-peach);
+    color: var(--ivory-cream);
+}
+
+.red {
+    background-color: var(--red-clay);
+    color: var(--ivory-cream);
+}
+
+.blue {
+    background-color: var(--river-blue);
+    color: var(--ivory-cream);
+}
+
+.lightblue {
+    background-color: var(--mist-blue);
+    color: var(--ash-black);
+}
+
+.green {
+    background-color: var(--grass-green);
+    color: var(--ash-black);
+}
+
+.darkgreen {
+    background-color: var(--moss-green);
+    color: var(--ivory-cream)
+}
+.yellow {
+    background-color: var(--sunshine-yellow);
+    color: var(--ash-black);
+}
+
+/* Mobile-specific CSS */
+@media only screen and (max-width: 600px) {
+    
+    .button {
+        font-size: 18px; 
+        padding: 10px 20px; 
+    }
+
+    .logo img {
+        width: 100px; 
+    }
+
+    .title2 {
+        font-size: 75px; 
+    }
+
+    .title2 img{
+        height: 75px;
+    }
+
+    #titles {
+        margin-top: 100px; 
+    }
+}
+
+@media only screen and (max-width: 800px) { 
+    h1 {
+        width: 100%;
+        word-wrap: break-word;
+    }
+
+    .title1 {
+        font-size: 33px; 
+    }
+
+    .title2 {
+        font-size: 90px; 
+    }
+
+    .title2 img{
+        height: 90px;
+    }
+
+    .title3 {
+        font-size: 20px;
+    }
+
+    #titles {
+        margin-top: 100px;
+        margin-bottom: 80px;
+    }
+}
+
+@media only screen and (max-width: 550px) { 
+    body {
+        background-color: var(--ash-black);
+        color: var(--ivory-cream);
+    }
+
+    hr {
+        background-color: var(--ivory-cream);
+    }
+
+    h1 {
+        color: var(--ivory-cream);
+    }
+
+    
+    .title2 {
+        font-size: 50px; 
+    }
+
+    .title2 img{
+        height: 50px;
+    }
+
+    #titles {
+        margin-bottom: 60px;
+        margin-top: 60px;
+    }
+
+    #te1 {
+        display: none;
+    }
+    
+    #te2 {
+        display: block;
+    }
+
+    .logo img {
+        width: 70px;
+    }
 }

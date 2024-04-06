@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile | GT Dataseum</title>
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/info.css">
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content" class="center">
+            <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
+
+            <div class="info profile">
+                <img src="/img/personalities/<%= visitorData.group %>.png">
+                <div class="section">
+
+                </div>
+                <div class="section">
+                    <p></p>
+                    <img>
+                </div>
+                <div class="section">
+                    <p></p>
+                    <img>
+                    <div>
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <a href="#" class="button yellow">Share your profile</a>
+            <a href="/dotbuilder/<%= visitorData.sessionId %>" class="button red">Add your data to the map</a>
+
+            <hr>
+        </div>
+    </body>
+</html>

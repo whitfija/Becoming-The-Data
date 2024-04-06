@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Place your dot. | GT Dataseum</title>
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/map.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""/>
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+                crossorigin="">
+            </script>
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content full">
+            <p class="mapprompt">Place your dot somewhere in Atlanta that holds significance to you.</p>
+            <div id="map"></div>
+            <a id="save" href="/map/update/<%= addedDotData.sessionId %>?latitude=<%= addedDotData.latitude %>&longitude=<%= addedDotData.longitude %>" class="button green" >Save dot position to map.</a>
+        </div>
+
+        <script>
+            var dotMarkers = [];
+            var map;
+            document.addEventListener('DOMContentLoaded', function () {
+                map = L.map('map', {
+                    minZoom: 3,
+                }).setView([<%= addedDotData.longitude %>, <%= addedDotData.latitude %>], 10); // Atlanta coordinates
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // draggable dot
+                var dotMarker = L.circleMarker([<%= addedDotData.longitude %>, <%= addedDotData.latitude %>], {
+                    color: '#<%= addedDotData.colorHex %>',
+                    fillColor: '#<%= addedDotData.colorHex %>',
+                    fillOpacity: 0.7,
+                    radius: 8,
+                    draggable: true
+                }).addTo(map);
+
+                dotMarker.on('mouseover', function (event) {
+                    event.target.setStyle({ fillOpacity: 1.0 });
+                });
+
+                dotMarker.on('mouseout', function (event) {
+                    event.target.setStyle({ fillOpacity: 0.7 });
+                });
+
+                dotMarker.bindPopup(`
+                    <h1>Your dot.</h1>
+                    <img src="/img/personalities/<%= addedDotData.group %>.png" style="width: 100%; height: auto">
+                    <p>Creation Date: ${new Date(<%= addedDotData.timestamp %>).toLocaleString()}</p>
+                `);
+
+                dotMarkers.push(dotMarker);
+
+                // update position on map click
+                map.on('click', function (event) {
+                    var latlng = event.latlng;
+                    dotMarker.setLatLng(latlng);
+                    
+                    var saveButton = document.getElementById('save');
+                    saveButton.href = '/map/update/<%= addedDotData.sessionId %>?latitude=' + latlng.lng + '&longitude=' + latlng.lat;
+                });
+            });
+    
+        </script>
+    </body>
+</html>

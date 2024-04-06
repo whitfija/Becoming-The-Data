@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Find your Experience. | GT Dataseum</title>
+        <%- include('../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    </head>
+
+    <body>
+        <div id="content" class="center">
+            <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
+            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+
+            <h1 class="title1">Scan a QR code to continue.</h1>
+            <div id="message"></div>
+            <video id="scanner"></video>
+            <a onclick="switchCamera()" class="button green" style="margin-bottom: 50px;">Switch Camera</a>
+        </div>
+
+        <script type="text/javascript">
+            let scanner;
+            let activeCameraIndex = 0;
+            let cameras = [];
+    
+            function switchCamera() {
+                // Toggle to the next camera
+                activeCameraIndex = (activeCameraIndex + 1) % cameras.length;
+                scanner.start(cameras[activeCameraIndex]);
+            }
+    
+            function initializeScanner() {
+                scanner = new Instascan.Scanner({
+                    video: document.getElementById('scanner'),
+                    facingMode: 'user' // Default to front-facing camera
+                });
+    
+                scanner.addListener('scan', function (content) {
+                    // routine for scanning
+                    console.log(content);
+                    if (isRecognizedUrl(content)) {
+                        showMessage('Experience located. Loading...');
+                        console.log('Scanned URL:', content);
+                        console.log('Confirmation: URL recognized.');
+                        console.log('Loading...');
+                        setTimeout(function () {
+                            window.location.href = content;
+                        }, 2000); // 2 seconds
+                    } else {
+                        console.log('Scanned content is not a recognized URL:', content);
+                    }
+                });
+    
+                Instascan.Camera.getCameras().then(function (availableCameras) {
+                    cameras = availableCameras;
+                    if (cameras.length > 0) {
+                        // Start with the front-facing camera by default
+                        scanner.start(cameras[activeCameraIndex]);
+                    } else {
+                        console.error('No cameras found.');
+                    }
+                }).catch(function (e) {
+                    console.error(e);
+                });
+            }
+    
+            function isRecognizedUrl(content) {
+                const recognizedUrls = [
+                    'becoming-the-data.web.app',
+                ];
+                return recognizedUrls.some(url => content.includes(url));
+            }
+    
+            function showMessage(message) {
+                document.getElementById('message').innerHTML = message;
+            }
+    
+            initializeScanner();
+        </script>
+    </body>
+</html>

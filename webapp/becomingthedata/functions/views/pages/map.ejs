@@ -2,44 +2,76 @@
 <html>
     <head>
         <title>Atlanta Map | GT Dataseum</title>
-        <link rel="icon" type="image/x-icon" href="/img/dataseum_logo.png">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="Ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="/js/main.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
+        <%- include('../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/map.css">
-
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""/>
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+                crossorigin="">
+            </script>
     </head>
 
     <body>
         <div class="logo">
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
-        <div id="content">
-            <div id="map">
-                Hello World
+        <div id="content full">
+            <div class="maptitle">
+                <h1 id="title" class="title2">
+                    DATASEUM <img id="te1" class="textend" src="/img/3squares.png"><img id="te2" class="textend" src="/img/3squares_inverse.png">
+                </h1>
+                <h1 id="title" class="title2" style="font-size: 20px;">
+                    Becoming The Data - Live Map
+                </h1>
+            </div>
+            <div id="map"></div>
+            <div id="tooltip-container">
+                <button id="tooltip-toggle">?</button>
+                <p id="tooltip-text">Each dot on this map is an anonymous visitor of the DATASEUM <img style="height: 15px; width: 10px;" src="/img/3squares.png"> museum exhibit hosted in Georgia Tech's Price Gilbert Library.<br><br>Explore the map and click on the dots to learn a bit about that visitor's data profile.</p>
             </div>
         </div>
 
         <script>
-            var map = L.map('map').setView([33.749, -84.388], 11); // atlanta coordinates
-    
+            var dotMarkers = [];
+            var map;
+           document.addEventListener('DOMContentLoaded', function () {
+            map = L.map('map', {
+                minZoom: 8,
+            }).setView([33.749, -84.388], 13); // Atlanta coordinates
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '© OpenStreetMap contributors'
             }).addTo(map);
-    
-            // dot example
-            var dot = L.circleMarker([33.749, -84.388], {
-                color: '#ff0000', // Red color
-                fillColor: '#ff0000',
-                fillOpacity: 1,
-                radius: 8
-            }).addTo(map);
-            dot.bindPopup("Atlanta");
+
+            // dots
+            <% dots.forEach(dot => { %>
+                var dotMarker = L.circleMarker([<%= dot.longitude %>, <%= dot.latitude %>], {
+                    color: '#<%= dot.colorHex %>',
+                    fillColor: '#<%= dot.colorHex %>',
+                    fillOpacity: 0.7,
+                    radius: 8
+                }).addTo(map);
+
+                dotMarker.on('mouseover', function (event) {
+                    event.target.setStyle({ fillOpacity: 1.0 });
+                });
+
+                dotMarker.on('mouseout', function (event) {
+                    event.target.setStyle({ fillOpacity: 0.7 });
+                });
+
+                dotMarker.bindPopup(`
+                    <img src="/img/personalities/<%= dot.group %>.png" style="width: 100%; height: auto">
+                    <p>Created: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
+                `);
+
+                dotMarkers.push(dotMarker);
+            <% }); %>
+        });
     
         </script>
+        <script src="/js/map.js"></script>
     </body>
 </html>
