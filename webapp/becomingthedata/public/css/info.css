@@ -152,6 +152,13 @@
     background-color: var(--ash-black);
 }
 
+.profile {
+    margin: 50px;
+}
+
+.profile img {
+    width: 80%;
+}
 
 
 @media only screen and (min-width: 572px) { 

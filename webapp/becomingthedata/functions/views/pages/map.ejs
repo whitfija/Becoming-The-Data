@@ -18,14 +18,28 @@
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
         <div id="content full">
+            <div class="maptitle">
+                <h1 id="title" class="title2">
+                    DATASEUM <img id="te1" class="textend" src="/img/3squares.png"><img id="te2" class="textend" src="/img/3squares_inverse.png">
+                </h1>
+                <h1 id="title" class="title2" style="font-size: 20px;">
+                    Becoming The Data - Live Map
+                </h1>
+            </div>
             <div id="map"></div>
+            <div id="tooltip-container">
+                <button id="tooltip-toggle">?</button>
+                <p id="tooltip-text">Each dot on this map is an anonymous visitor of the DATASEUM <img style="height: 15px; width: 10px;" src="/img/3squares.png"> museum exhibit hosted in Georgia Tech's Price Gilbert Library.<br><br>Explore the map and click on the dots to learn a bit about that visitor's data profile.</p>
+            </div>
         </div>
 
         <script>
             var dotMarkers = [];
             var map;
            document.addEventListener('DOMContentLoaded', function () {
-            map = L.map('map').setView([33.749, -84.388], 13); // Atlanta coordinates
+            map = L.map('map', {
+                minZoom: 8,
+            }).setView([33.749, -84.388], 13); // Atlanta coordinates
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
@@ -36,13 +50,21 @@
                 var dotMarker = L.circleMarker([<%= dot.longitude %>, <%= dot.latitude %>], {
                     color: '#<%= dot.colorHex %>',
                     fillColor: '#<%= dot.colorHex %>',
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                     radius: 8
                 }).addTo(map);
 
+                dotMarker.on('mouseover', function (event) {
+                    event.target.setStyle({ fillOpacity: 1.0 });
+                });
+
+                dotMarker.on('mouseout', function (event) {
+                    event.target.setStyle({ fillOpacity: 0.7 });
+                });
+
                 dotMarker.bindPopup(`
                     <img src="/img/personalities/<%= dot.group %>.png" style="width: 100%; height: auto">
-                    <p>Creation Date: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
+                    <p>Created: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
                 `);
 
                 dotMarkers.push(dotMarker);

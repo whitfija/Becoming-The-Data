@@ -41,6 +41,7 @@ h1 {
 #content {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .center {
@@ -63,6 +64,7 @@ h1 {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     margin-top: 5px;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .button:hover {
@@ -102,14 +104,14 @@ h1 {
 
 .logo {
     position: fixed;
-    top: 93vh; 
+    bottom: 2vh; 
     left: 20px; 
     opacity: 0.5; 
     z-index: 9999; 
 }
 
 .logo img {
-    width: 200px;
+    width: 100px;
     height: auto; 
 }
 
@@ -287,10 +289,6 @@ h1 {
     
     #te2 {
         display: block;
-    }
-
-    .logo {
-        top: 2vh; 
     }
 
     .logo img {

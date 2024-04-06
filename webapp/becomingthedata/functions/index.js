@@ -79,7 +79,7 @@ const desctosurvey = {
 // check if session exists
 const checkSession = (req, res, next) => {
     if (!req.session.sessionId) {
-        res.redirect('/start');
+        res.redirect('/');
     } else {
         next();
     }
@@ -149,6 +149,27 @@ function checkDotExists(sessionId) {
             .then(snapshot => {
                 const dotExists = !snapshot.empty;
                 resolve(dotExists);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// get dot data for a given sessionId
+function getDotData(sessionId) {
+    return new Promise((resolve, reject) => {
+        const dotRef = db.collection('dots').where('sessionId', '==', sessionId);
+        dotRef.get()
+            .then(snapshot => {
+                if (!snapshot.empty) {
+                    snapshot.forEach(doc => {
+                        resolve(doc.data());
+                    });
+                } else {
+                    // dot not found
+                    resolve(null);
+                }
             })
             .catch(error => {
                 reject(error);
@@ -438,6 +459,21 @@ app.get('/dotbuilder/:id', (req, res)=>{
         res.redirect('/');
     });
 })
+// get dots
+app.get('/api/dots', (req, res) => {
+    res.json(dots);
+});
+
+// map
+app.get('/map', async (req, res) => {
+    try {
+        dots = await fetchDotsFromFirestore();
+        res.render("pages/map", { dots });
+    } catch (error) {
+        console.error('Error fetching dots:', error);
+        res.status(500).send('Error fetching dots');
+    }
+});
 
 // place dot on wanted position on map
 app.get('/map/add/:id', async (req, res)=>{
@@ -447,7 +483,8 @@ app.get('/map/add/:id', async (req, res)=>{
         const dotExists = await checkDotExists(sessionId);
 
         if (dotExists) {
-            res.redirect('/map');
+            const dotData = await getDotData(sessionId);
+            res.render("pages/map_placer", { addedDotData: dotData });
         } else {
             const visitorData = await getVisitorData(sessionId);
             const group = visitorData.group;
@@ -468,8 +505,8 @@ app.get('/map/add/:id', async (req, res)=>{
                 console.error('Error: Added dot data is null');
             }
 
-            //res.render("pages/map_placer", {sessionId});
-            res.redirect('/map');
+            res.render("pages/map_placer", {addedDotData});
+            //res.redirect('/map');
         }
     } catch (error) {
         console.error('Error adding dot:', error);
@@ -477,21 +514,48 @@ app.get('/map/add/:id', async (req, res)=>{
     }
 })
 
-// get dots
-app.get('/api/dots', (req, res) => {
-    res.json(dots);
-});
+// update location of dot (id with sessionid)
+app.get('/map/update/:id', async (req, res) => {
+    const sessionId = req.params.id;
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
 
-// map
-app.get('/map', async (req, res) => {
     try {
-        dots = await fetchDotsFromFirestore();
-        res.render("pages/map", { dots });
+        // update dot location based on sessionId
+        const querySnapshot = await db.collection('dots').where('sessionId', '==', sessionId).get();
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach(doc => {
+                // pdate dot location in Firestore
+                doc.ref.update({
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude)
+                });
+
+                // pdate dot location in the EJS dots array
+                dots.forEach(dot => {
+                    if (dot.sessionId === sessionId) {
+                        dot.latitude = parseFloat(latitude);
+                        dot.longitude = parseFloat(longitude);
+                    }
+                });
+            });
+
+            // updated successfully
+            console.log('Dot location updated successfully.');
+            res.render("pages/dotadded", { sessionId });
+        } else {
+            // dot not found
+            console.error('Dot not found.');
+            res.status(404).send('Dot not found.');
+        }
     } catch (error) {
-        console.error('Error fetching dots:', error);
-        res.status(500).send('Error fetching dots');
+        // error updating dot location
+        console.error('Error updating dot location:', error);
+        res.status(500).send('Error updating dot location');
     }
 });
+
+
 
 /* --------------------- defaults and errors  ---------------------*/
 
