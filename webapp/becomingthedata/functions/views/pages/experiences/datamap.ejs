@@ -13,20 +13,47 @@
         </div>
         <div id="content" class="center">
             <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
-            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
 
             <div class="survey">
                 <h1 class="title">Exhibit: MR Interactive Dataseum Map</h1>
                 <img src="/img/exhibit/datamap.png" alt="Large Image" class="large-image">
 
                 <div class="quiz">
-                    <h2 class="prompt">Question: [prompt]</h2>
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a onclick="submitSurveyResponse('datamap', document.getElementById('answer').value.trim())" class="button yellow" >Submit response.</a>
+                    <div class="question">
+                        <h2 class="prompt">Do you feel empowered to talk about sustainability in Atlanta?</h2>
+                        <div class="yesno" id="yesno1">
+                            <a id="q1-yes" class="button green">Yes</a>
+                            <a id="q1-no" class="button red">No</a>
+                        </div>
+                        <textarea id="answer1" rows="4" cols="50" class="answer" placeholder="Elaborate (optional)"></textarea>
+                    </div>
+                    <div class="question">
+                        <h2 class="prompt">Do you think this data might be biased?</h2>
+                        <div class="yesno" id="yesno2">
+                            <a id="q2-yes" class="button green">Yes</a>
+                            <a id="q2-no" class="button red">No</a>
+                        </div>
+                        <textarea id="answer2" rows="4" cols="50" class="answer" placeholder="Elaborate (optional)"></textarea>
+                    </div>
+                    <div class="question">
+                        <h2 class="prompt">Did this exhibition change the way you think about data?</h2>
+                        <div class="yesno" id="yesno3">
+                            <a id="q3-yes" class="button green">Yes</a>
+                            <a id="q3-no" class="button red">No</a>
+                        </div>
+                        <textarea id="answer3" rows="4" cols="50" class="answer" placeholder="Elaborate (optional)"></textarea>
+                    </div>
+                    <a onclick="submitSurveyResponse('datamap', {
+                        'q1': [q1Selected, document.getElementById('answer1').value.trim()],
+                        'q2': [q2Selected, document.getElementById('answer2').value.trim()],
+                        'q3': [q3Selected, document.getElementById('answer3').value.trim()]
+                    })" class="button yellow" >Submit responses.</a>
                 </div>
             </div>
 
             <hr>
         </div>
+        <script src="/js/survey.js"></script>
     </body>
 </html>

@@ -57,6 +57,7 @@
 }
 
 .whitecards .selected:hover {
+    border-color: var(--grass-green);
 }
 
 .card img {
@@ -70,5 +71,9 @@
 @media screen and (max-width: 550px) {
     .whitecards::-webkit-scrollbar {
         display: none;
+    }
+
+    .whitecards {
+        margin-bottom: 0;
     }
 }
