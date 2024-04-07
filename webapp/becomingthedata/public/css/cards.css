@@ -1,0 +1,74 @@
+.cardsagainst {
+    display: flex;
+    justify-content: center;
+    font-family: Arial;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.card {
+    margin: 20px;
+    padding: 25px;
+    border-radius: 26.5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 142.5px;
+    min-width: 142.5px;
+    height: 198.75px;
+    position: relative;
+    text-align: left;
+}
+
+.blackcard {
+    background-color: #000;
+    color: #fff;
+}
+
+.whitecards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.whitecards .card {
+    background-color: #fff;
+    color: #000;
+    border: 3px solid transparent;
+    transition: border-color 0.3s ease, border-width 0.3s ease;
+    margin-bottom: 40px;
+}
+
+.whitecards .card p {
+    margin-bottom: 20px;
+}
+
+.whitecards .card:hover {
+    border-color: var(--georgia-peach);
+}
+
+.whitecards .selected {
+    border-color: var(--grass-green);
+    border-width: 5px;
+}
+
+.whitecards .selected:hover {
+}
+
+.card img {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 25px;
+    height: 35px;
+}
+
+@media screen and (max-width: 550px) {
+    .whitecards::-webkit-scrollbar {
+        display: none;
+    }
+}

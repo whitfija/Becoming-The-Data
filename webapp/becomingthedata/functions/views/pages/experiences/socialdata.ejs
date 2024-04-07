@@ -5,6 +5,7 @@
         <%- include('../../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/cards.css">
     </head>
 
     <body>
@@ -13,20 +14,53 @@
         </div>
         <div id="content" class="center">
             <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
-            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
+
+            <script>var selectedText = '';</script>
 
             <div class="survey">
-                <h1 class="title">Exhibit: Atlanta Arrest Data</h1>
+                <h1 class="title">Exhibit: Social Sustainability</h1>
                 <img src="/img/exhibit/socialdata.png" alt="Large Image" class="large-image">
 
                 <div class="quiz">
-                    <h2 class="prompt">Question: [prompt]</h2>
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a onclick="submitSurveyResponse('socialdata', document.getElementById('answer').value.trim())" class="button orange" >Submit response.</a>
+                    <h2 class="prompt">Select a card to answer the prompt.</h2>
+                    <div class="cardsagainst">
+                        <div class="blackcard card"><p>The secret to social sustainability is __________.</p><img src="/img/3squares_inverse.png" alt="DATASEUM"></div>
+                        <div class="whitecards">
+                            <div class="card" onclick="selectCard(this)"><p>Recycling</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Going to a protest</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Something else</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Something else</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                        </div>
+                    </div>
+
+                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here" style="display: none;"></textarea>
+                    <a onclick="submitSurveyResponse('socialdata', selectedText)" class="button orange" >Submit.</a>
                 </div>
             </div>
-
-            <hr>
         </div>
+
+        <script>
+            function selectCard(card) {
+                // deselect other cards
+                var cards = document.querySelectorAll('.whitecards .card');
+                cards.forEach(function(card) {
+                    card.classList.remove('selected');
+                });
+        
+                // select
+                card.classList.add('selected');
+                selectedText = card.querySelector('p').textContent;
+                console.log('Selected card:', selectedText);
+            }
+
+            // autoselect first card on load
+            window.addEventListener('DOMContentLoaded', function() {
+                var firstCard = document.querySelector('.whitecards .card');
+                if (firstCard) {
+                    selectCard(firstCard);
+                }
+            });
+        </script>
     </body>
 </html>

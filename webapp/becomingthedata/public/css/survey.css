@@ -5,14 +5,16 @@
     justify-content: center;
     margin-left: 25px;
     margin-right: 25px;
+    width: 100%;
 }
 
 .title {
     font-size: 40px;
+    width: 80%;
 }
 
 .large-image {
-    width: 70%;
+    width: 20%;
     max-width: 600px;
     height: auto;
     margin-top: 20px;
@@ -25,12 +27,15 @@
 .quiz {
     margin-top: 25px;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    width: 100%;
+    justify-content: center;
 }
 
 .prompt {
     font-size: 20px;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .answer {
