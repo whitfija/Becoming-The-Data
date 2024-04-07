@@ -67,6 +67,16 @@
     border-width: 5px;
 }
 
+.aqi {
+    font-size: 100px;
+    margin: 0;
+}
+
+#aqiresult {
+    font-size: 60px;
+    margin: 0;
+}
+
 @media only screen and (max-width: 550px) { 
     .answer {
         background-color: var(--ivory-cream);

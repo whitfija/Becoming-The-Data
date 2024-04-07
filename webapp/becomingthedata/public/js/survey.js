@@ -3,9 +3,6 @@
 var q1Selected = false;
 var q2Selected = false;
 var q3Selected = false;
-toggleSelected('q1', false);
-toggleSelected('q2', false);
-toggleSelected('q3', false);
 
 // toggle the selected class and update the boolean variable
 function toggleSelected(question, selected) {
@@ -39,7 +36,3 @@ document.getElementById('q2-no').addEventListener('click', function(event) {
 document.getElementById('q3-no').addEventListener('click', function(event) {
     toggleSelected('q3', false);
 });
-
-toggleSelected('q1', false);
-toggleSelected('q2', false);
-toggleSelected('q3', false);

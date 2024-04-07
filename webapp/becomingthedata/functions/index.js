@@ -16,11 +16,13 @@ const logger = require("firebase-functions/logger");
 const functions = require("firebase-functions");
 const firebase = require("firebase-admin");
 const express = require('express')
+const fs = require('fs');
 const path = require('path')
 const session = require('express-session')
 const ejs = require('ejs')
 const FirestoreStore = require('firestore-store')(session);
 const app = express()
+const axios = require('axios');
 
 // express
 app.engine('ejs', ejs.renderFile);
@@ -53,6 +55,18 @@ app.use(
         }
     })
 );
+
+// airquality api token
+let aqAPItoken;
+try {
+    const configFile = fs.readFileSync('airqualitykey.json');
+    const config = JSON.parse(configFile);
+    aqAPItoken = config.apiToken;
+    console.log('API token loaded')
+  } catch (error) {
+    console.error('Error reading config file:', error);
+    process.exit(1);
+  }
 
 /* ------------------------------------------ global variables & useful constants ------------------------------------------ */
 
@@ -414,6 +428,20 @@ app.post('/survey/submit', checkSession, (req, res) => {
         console.error('Error updating exhibitinfo:', error);
         res.status(500).send('Failed to submit survey response.');
     });
+});
+
+// get airquality from api https://aqicn.org/api/
+app.get('/api/airquality', async (req, res) => {
+    try {
+        const apiUrl = `https://api.waqi.info/feed/atlanta/?token=${aqAPItoken}`;
+        const response = await axios.get(apiUrl);
+        const airQualityData = response.data;
+        //console.log(airQualityData);
+        res.json(airQualityData);
+    } catch (error) {
+        console.error('Error fetching air quality data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 /* --------------------- post-experience (profile, dots, map) --------------------- */
