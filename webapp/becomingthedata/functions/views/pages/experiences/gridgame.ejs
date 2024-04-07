@@ -5,6 +5,7 @@
         <%- include('../../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/grid.css">
     </head>
 
     <body>
@@ -13,20 +14,34 @@
         </div>
         <div id="content" class="center">
             <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
-            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
 
             <div class="survey">
                 <h1 class="title">Exhibit: Electrical Grid Management</h1>
                 <img src="/img/exhibit/gridgame.png" alt="Large Image" class="large-image">
-
                 <div class="quiz">
-                    <h2 class="prompt">Question: [prompt]</h2>
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a onclick="submitSurveyResponse('gridgame', document.getElementById('answer').value.trim())" class="button darkgreen" >Submit response.</a>
+                    <h2 class="prompt" style="display: none;">Use the sliders to answer the questions below</h2>
+
+                    <div class="sliderquestion">
+                        <h2 class="prompt">How much, on a scale of 1-10, do you value reliability of your power grid?</h2> 
+                        <p class="slideroutput" id="outputReliable"></p>
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="10" value="5" class="slider" id="rangeReliable">
+                        </div>
+                    </div>
+
+                    <div class="sliderquestion" style="margin-bottom: 50px;">
+                        <h2 class="prompt">How much would you pay in electricity bill costs to ensure less outages caused by wildfires?</h2> 
+                        <p class="slideroutput" id="outputMoney"></p>
+                        <div class="slidecontainer">
+                            <input type="range" min="00.00" max="200.00" value="50.02" step="0.01" class="slider" id="rangeMoney">
+                        </div>
+                    </div>
+                    <a onclick="submitSurveyResponse('gridgame', {'reliability': parseInt(reliableSlider.value), 'priceincrease': parseFloat(moneySlider.value)})" class="button darkgreen" >Submit responses.</a>
                 </div>
             </div>
-
-            <hr>
         </div>
+
+        <script src="/js/grid.js"></script>
     </body>
 </html>

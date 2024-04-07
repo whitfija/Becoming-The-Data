@@ -33,8 +33,6 @@
                             <div class="card" onclick="selectCard(this)"><p>Something else</p><img src="/img/3squares.png" alt="DATASEUM"></div>
                         </div>
                     </div>
-
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here" style="display: none;"></textarea>
                     <a onclick="submitSurveyResponse('socialdata', selectedText)" class="button orange" >Submit.</a>
                 </div>
             </div>
@@ -51,7 +49,7 @@
                 // select
                 card.classList.add('selected');
                 selectedText = card.querySelector('p').textContent;
-                console.log('Selected card:', selectedText);
+                //console.log('Selected card:', selectedText);
             }
 
             // autoselect first card on load
