@@ -34,6 +34,14 @@
                             <div class="card" onclick="selectCard(this)"><p>Taxing the rich</p><img src="/img/3squares.png" alt="DATASEUM"></div>
                             <div class="card" onclick="selectCard(this)"><p>Awareness</p><img src="/img/3squares.png" alt="DATASEUM"></div>
                             <div class="card" onclick="selectCard(this)"><p>Jeff Bezos</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Voting in local elections</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Banning TikTok</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>A Netflix documentary binge</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Burning bridges, literally</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Hugging it out with Mother Nature</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Supporting small local businesses</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Parallel parking on a crowded street</p><img src="/img/3squares.png" alt="DATASEUM"></div>
+                            <div class="card" onclick="selectCard(this)"><p>Donations. Donations. Donations. Gifts. Gifts</p><img src="/img/3squares.png" alt="DATASEUM"></div>
                         </div>
                     </div>
                     <a onclick="submitSurveyResponse('socialdata', selectedText)" class="button orange" >Submit.</a>
@@ -57,8 +65,24 @@
 
             // autoselect first card on load
             window.addEventListener('DOMContentLoaded', function() {
-                var firstCard = document.querySelector('.whitecards .card');
-                if (firstCard) {
+                var whiteCards = document.querySelectorAll('.whitecards .card');
+                if (whiteCards.length > 0) {
+                    // Convert NodeList to array
+                    whiteCards = Array.from(whiteCards);
+                    
+                    // Randomize the order of cards
+                    whiteCards.sort(function() {
+                        return 0.5 - Math.random();
+                    });
+
+                    // Append shuffled cards back to the container
+                    var whiteCardsContainer = document.querySelector('.whitecards');
+                    whiteCards.forEach(function(card) {
+                        whiteCardsContainer.appendChild(card);
+                    });
+
+                    // Select the first card
+                    var firstCard = whiteCards[0];
                     selectCard(firstCard);
                 }
             });
