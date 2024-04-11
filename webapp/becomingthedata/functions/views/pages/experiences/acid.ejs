@@ -5,6 +5,7 @@
         <%- include('../../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/connections.css">
     </head>
 
     <body>
@@ -13,20 +14,46 @@
         </div>
         <div id="content" class="center">
             <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
-            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
 
             <div class="survey">
                 <h1 class="title">Exhibit: Acid Rain</h1>
                 <img src="/img/exhibit/acid.png" alt="Large Image" class="large-image">
 
-                <div class="quiz">
-                    <h2 class="prompt">Question: [prompt]</h2>
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a onclick="submitSurveyResponse('acid', document.getElementById('answer').value.trim())" class="button orange" >Submit response.</a>
+                <div class="quiz" style="width: 90%;">
+                    <h2 class="prompt">Create groups of 4.</h2>
+
+                    <div class="connections">
+                        <div class="correct-answers">
+                            <div class="group yellow" id="yellowgroup">
+                                <h2 class="group-title">[title]</h2>
+                                <p class="group-words">[word][word][word][word]</p>
+                            </div>
+                            <div class="group blue" id="bluegroup">
+                                <h2 class="group-title">[title]</h2>
+                                <p class="group-words">[word][word][word][word]</p>
+                            </div>
+                            <div class="group green" id="greengroup">
+                                <h2 class="group-title">[title]</h2>
+                                <p class="group-words">[word][word][word][word]</p>
+                            </div>
+                            <div class="group red" id="redgroup">
+                                <h2 class="group-title">[title]</h2>
+                                <p class="group-words">[word][word][word][word]</p>
+                            </div>
+                        </div>
+                        <div class="board">
+                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
+                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
+                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
+                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
+                        </div>
+                        <a onclick="checkAnswer()" class="button red" >Check answer.</a>
+                    </div>
                 </div>
             </div>
-
-            <hr>
         </div>
+
+        <script src="/js/connections.js"></script>
     </body>
 </html>
