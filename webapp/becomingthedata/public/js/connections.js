@@ -1,8 +1,8 @@
 var answerKey = {
-    'redgroup': ["Factory", "Vehicle", "Powerplant", "Incinerator"],
-    'bluegroup': ["Precipitation", "Temperature", "Weathering", "Atmosphere"],
-    'yellowgroup': ["Oxidation", "Reduction", "Neutralization", "Dissociation"],
-    'greengroup': ["Forest", "Lake", "River", "Wetland"]
+    'redgroup': ["FACTORY", "VEHICLE", "COAL", "FUEL"],
+    'bluegroup': ["RUST", "EROSION", "DECAY", "FADING"],
+    'yellowgroup': ["OZONE", "SMOG", "POLLUTANT", "ASTHMA"],
+    'greengroup': ["FOREST", "LAKE", "RIVER", "WETLAND"]
 }
 var selectedCardCount = 0;
 var selected = [];
