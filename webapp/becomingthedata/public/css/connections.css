@@ -1,0 +1,86 @@
+.connections {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.correct-answers {
+    width: 100%;
+}
+
+.correct-answers .group {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    opacity: 80%;
+    padding: 20px;
+    display: none;
+    font-size: 14px;
+}
+
+.correct-answers .group h2{
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.group-words {
+    margin: 0;
+}
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+    container-type: inline-size;
+}
+
+.board a {
+    color: var(--ash-black) !important;
+    background-color: rgb(221, 216, 216);
+    border-radius: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px; 
+    padding-left: 1%;
+    padding-right: 1%;
+    width: 16%;
+    flex-grow: 0;
+    transition: border 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    border: 5px solid transparent;
+    font-size: 3cqw;
+    container-name: board;
+}
+
+.board a:hover {
+    box-shadow: 3px var(--ash-black);
+    cursor: pointer;
+    border: 5px solid var(--fall-orange);
+}
+
+.selected {
+    border: 5px solid var(--grass-green) !important;
+}
+
+@media only screen and (max-width: 450px) {
+    .board a {
+        padding-left: 0;
+        padding-right: 0;
+        width: 19%;
+    }
+
+    .board{
+        gap: 10px;
+    }
+}
+
+@media only screen and (max-width: 342px) {
+    .board a {
+        width: 15%;
+
+    }
+    .board{
+        gap: 10px;
+    }
+}

@@ -20,13 +20,22 @@
                 <img src="/img/exhibit/airquality.png" alt="Large Image" class="large-image">
 
                 <div class="quiz">
-                    <h2 class="prompt">Question: [prompt]</h2>
-                    <textarea id="answer" rows="4" cols="50" class="answer" placeholder="Type your answer here"></textarea>
-                    <a onclick="submitSurveyResponse('airquality', document.getElementById('answer').value.trim())" class="button peach" >Submit response.</a>
+                    <div class="question">
+                        <h2 class="prompt">Guess: What do you think the current local Air Quality Index is here in Atlanta?</h2>
+                        <input id="aqiguess" class="answer" type="number" min="0" max="500"  placeholder="AQI" style="font-size: 50px; width: 200px; text-align: center;"></input>
+                        <a id="btnguess" onclick="check()" class="button peach" >Check</a>
+                    </div>
+
+                    <div class="question">
+                        <h2 class="prompt">Based on what you learned in the exhibit, how high would the AQI need to be for you to feel the need to change your behavior for your health? (i.e. wear a mask, stay inside, etc.)</h2>
+                        <input id="aqilimit" class="answer" type="number" min="0" max="500"  placeholder="AQI" style="font-size: 50px; width: 200px; text-align: center;"></input>
+                    </div>
+
+                    <a onclick="submitSurveyResponse('airquality', {'correct': correct, 'personalaqilimit': parseInt(document.getElementById('aqilimit').value)})" class="button red" >Submit responses.</a>
                 </div>
             </div>
-
-            <hr>
         </div>
+
+        <script src="/js/airquality.js"></script>
     </body>
 </html>
