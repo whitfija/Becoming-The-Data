@@ -6,15 +6,15 @@
 
 .correct-answers {
     width: 100%;
-    padding: 10px;
 }
 
 .correct-answers .group {
     border-radius: 10px;
     margin-bottom: 20px;
     opacity: 80%;
-    padding: 30px;
+    padding: 20px;
     display: none;
+    font-size: 14px;
 }
 
 .correct-answers .group h2{
@@ -44,14 +44,44 @@
     padding-bottom: 30px; 
     padding-left: 1%;
     padding-right: 1%;
-    width: 18%;
+    width: 16%;
     flex-grow: 0;
     transition: border 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-    
+    border: 5px solid transparent;
+    font-size: 12px;
 }
 
 .board a:hover {
     box-shadow: 3px var(--ash-black);
     cursor: pointer;
     border: 5px solid var(--fall-orange);
+}
+
+.selected {
+    border: 5px solid var(--grass-green) !important;
+}
+
+@media only screen and (max-width: 547px) {
+    .board a {
+        font-size: 10px; 
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .board a {
+        padding-left: 0;
+        padding-right: 0;
+        width: 17%;
+        font-size: 9px; 
+    }
+}
+
+@media only screen and (max-width: 342px) {
+    .board a {
+        width: 15%;
+        font-size: 8px;
+    }
+    .board{
+        gap: 10px;
+    }
 }

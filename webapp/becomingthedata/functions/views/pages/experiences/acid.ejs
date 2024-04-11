@@ -21,34 +21,33 @@
                 <img src="/img/exhibit/acid.png" alt="Large Image" class="large-image">
 
                 <div class="quiz" style="width: 90%;">
-                    <h2 class="prompt">Create groups of 4.</h2>
+                    <h2 class="prompt">Find the correct groups of 4 out of the following acid rain related terms.</h2>
+                    <h2 class="prompt" id="alert"></h2>
 
                     <div class="connections">
                         <div class="correct-answers">
                             <div class="group yellow" id="yellowgroup">
-                                <h2 class="group-title">[title]</h2>
-                                <p class="group-words">[word][word][word][word]</p>
+                                <h2 class="group-title">Chemical processes involved in acid rain formation</h2>
+                                <p class="group-words"></p>
                             </div>
                             <div class="group blue" id="bluegroup">
-                                <h2 class="group-title">[title]</h2>
-                                <p class="group-words">[word][word][word][word]</p>
+                                <h2 class="group-title">Climate processes and properties affected by acid rain</h2>
+                                <p class="group-words"></p>
                             </div>
                             <div class="group green" id="greengroup">
-                                <h2 class="group-title">[title]</h2>
-                                <p class="group-words">[word][word][word][word]</p>
+                                <h2 class="group-title">Ecosystems affected by acid rain</h2>
+                                <p class="group-words"></p>
                             </div>
                             <div class="group red" id="redgroup">
-                                <h2 class="group-title">[title]</h2>
-                                <p class="group-words">[word][word][word][word]</p>
+                                <h2 class="group-title">Common pollution sources contributing to acid rain</h2>
+                                <p class="group-words"></p>
                             </div>
                         </div>
-                        <div class="board">
-                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
-                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
-                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
-                            <a>[word]</a><a>[word]</a><a>[word]</a><a>[word]</a>
-                        </div>
-                        <a onclick="checkAnswer()" class="button red" >Check answer.</a>
+                        <div class="board"></div>
+                        <a id="checkanswer" onclick="checkAnswer()" class="button red" >Check answer.</a>
+                        <a id="rand" onclick="randomizeBoard()" class="button darkgreen" >Randomize.</a>
+                        <a id="giveup" onclick="submitSurveyResponse('acid', {'completed': win, 'errors': wrongGuessCount})" class="button yellow" style="display: none;">Give Up.</a>
+                        <a id="submit" onclick="submitSurveyResponse('acid', {'completed': win, 'errors': wrongGuessCount})" class="button red" style="display: none;">Submit results.</a>
                     </div>
                 </div>
             </div>
