@@ -15,29 +15,188 @@
             <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
 
             <div class="info profile">
-                <img src="/img/personalities/<%= visitorData.group %>.png">
-                <div class="section">
+                <div id="personality" class="section">
+                    <% var personalityText = ""; %>
+                    <% switch (visitorData.group) {
+                        case 1: personalityText = "Marine Scientist"; break; 
+                        case 2: personalityText = "Florist"; break; 
+                        case 3: personalityText = "Atlantean"; break;
+                        case 4: personalityText = "Geologist"; break;
+                        case 5: personalityText = "Tree Hugger"; break;
+                        case 6: personalityText = "Sun Ray"; break; 
+                        case 7: personalityText = "Knowledge Bank"; break; 
+                        case 8: personalityText = "Data Conductor"; break; 
+                    } %>
+                    <h1>You are a <span style="color: var(--fall-orange)"><%= personalityText %></span>!</h1>
+                    <img src="/img/personalities/<%= visitorData.group %>.png">
+                    <p>Scroll to view your data profile!</p>
+                </div>
 
-                </div>
-                <div class="section">
-                    <p></p>
-                    <img>
-                </div>
-                <div class="section">
-                    <p></p>
-                    <img>
-                    <div>
-                        <p></p>
-                        <p></p>
+                <% if (visitorData.exhibitsvisited.gridgame) { %>
+                    <div id="gridgame" class="section">
+                        <h1>The average electric bill in Atlanta is $199/month.</h1>
+                        <p> With your selected Wildfire Protection plan of <span style="color: var(--grass-green)">$<%= visitorData.exhibitinfo.gridgame.priceincrease %></span> your total electric bill would be:</p>
+                        <h2 style="color: var(--sunshine-yellow)">$<%= (visitorData.exhibitinfo.gridgame.priceincrease + 199).toFixed(2); %></h2>
+                        <h1>You will have saved approximately:</h1>
+                        <h2 style="color: var(--grass-green)"><%= Math.round(visitorData.exhibitinfo.gridgame.priceincrease / 10) * 1000 %> trees</h2>
+                        <h1>from wildfires!</h1>
+                        <img class="bkg" src="">
                     </div>
-                </div>
+                <% } %>
 
+                <% if (visitorData.exhibitsvisited.oceans) { %>
+                    <div id="oceans" class="section">
+                        <h1>Say "Hello!" to your fish buddy, <span style="color: var(--red-clay)"><%= visitorData.exhibitinfo.oceans.name %></span></h1>
+                        <canvas id="fishCanvas" width="300" height="300" style="margin-top: 40px; margin-bottom: 0;"></canvas>
+                        <h2 style="margin-top: 0;"><span style="color: var(--red-clay)"><%= visitorData.exhibitinfo.oceans.name %></span></h2>
+                        <h1>Protect <span style="color: var(--red-clay)"><%= visitorData.exhibitinfo.oceans.name %></span>'s home!</h1>
+                        <p>Plastic waste is the highest source of marine pollution. Properly dispose of and recycle your plastic waste to keep <span style="color: var(--red-clay)"><%= visitorData.exhibitinfo.oceans.name %></span> and their fish friends, family, and acquaintances safe.</p>
+                        <img class="bkg" src="">
+
+                        <script>
+                            // draw fish
+                            const imageData = "<%= visitorData.exhibitinfo.oceans.canvas %>";
+                            const canvas = document.getElementById('fishCanvas');
+                            const ctx = canvas.getContext('2d');
+                            const img = new Image();
+                            img.onload = function() {
+                                ctx.drawImage(img, 0, 0);
+                            };
+                            img.src = imageData;
+                        </script>
+                    </div>
+                    
+                <% } %>
+
+                <% if (visitorData.exhibitsvisited.airquality) { %>
+                    <div id="airquality" class="section">
+                        <% const aqi = parseInt(visitorData.exhibitinfo.airquality.personalaqilimit);
+                            let aqiCategory = "";
+                            let textColor = "";
+
+                            if (aqi >= 0 && aqi <= 50) {
+                                aqiCategory = "Good";
+                                textColor = "var(--grass-green)";
+                            } else if (aqi >= 51 && aqi <= 100) {
+                                aqiCategory = "Moderate";
+                                textColor = "var(--sunshine-yellow)";
+                            } else if (aqi >= 101 && aqi <= 150) {
+                                aqiCategory = "Unhealthy for Sensitive Groups";
+                                textColor = "var(--georgia-peach)";
+                            } else if (aqi >= 151 && aqi <= 200) {
+                                aqiCategory = "Unhealthy";
+                                textColor = "var(--fall-orange)";
+                            } else if (aqi >= 201 && aqi <= 300) {
+                                aqiCategory = "Very Unhealthy";
+                                textColor = "var(--sunshine-yellow)";
+                            } else if (aqi >= 301 && aqi <= 500) {
+                                aqiCategory = "Hazardous";
+                                textColor = "#841cbc";
+                            }
+                        %>
+                        <p>You determined that an AQI of <span style="color: <%= textColor %>"><%= visitorData.exhibitinfo.airquality.personalaqilimit %></span> is enough for you to take action.</p>
+                        <h1>This AQI is considered</h1>
+                        <h2 style="color: <%= textColor %>"><%= aqiCategory %></h2>
+                        <h1>in 2023, the average AQI in the US was:</h1>
+                        <h2 style="color: var(--grass-green)">38</h2>
+                        <% const difference = aqi - 38;
+                            let comparisonText = "";
+                            if (difference > 0) {
+                                comparisonText = `${difference} higher than`;
+                            } else if (difference < 0) {
+                                comparisonText = `${-difference} lower than`;
+                            } else {
+                                comparisonText = "equal to";
+                            }
+                        %>
+                        <h1>This is <span style="color: var(--river-blue)"><%= comparisonText %></span> your personal AQI limit</h1>
+                        <img class="bkg" src="">
+                    </div>
+                <% } %>
+
+                <% if (visitorData.exhibitsvisited.acid) { %>
+                    <div id="acid" class="section">
+                        <% const completed = visitorData.exhibitinfo.acid.completed;
+                            const errors = visitorData.exhibitinfo.acid.errors;
+                            let acidExpertise = "";
+                            let errorDisplay = "";
+                        
+                            if (completed) {
+                                if (errors === 0) {
+                                    acidExpertise = "expert!";
+                                    errorDisplay = `${errors} errors`;
+                                } else {
+                                    acidExpertise = "trainee";
+                                    errorDisplay = `${errors} errors`;
+                                }
+                            } else {
+                                acidExpertise = "student";
+                            } %>
+                        <h1>You are an <span style="color: var(--grass-green)">acid rain <%= acidExpertise %></span></h1>
+
+                        <% if (completed) { %>
+                            <h1>You completed the challenge with</h1>
+                            <h2 style="color: var(--fall-orange);"><%= errorDisplay %></h2>
+                        <% } %>
+
+                        <p>Share your knowledge with the world, and help prevent acid rain and it's effects.</p>
+                        <img class="bkg" src="">
+                    </div>
+                <% } %>
+
+                <% if (visitorData.exhibitsvisited.socialdata) { %>
+                    <div id="socialdata" class="section">
+                        <h1>You identified the secret to social sustainability to be:</h1>
+                        <h2 style="color: var(--sunshine-yellow);">"<%= visitorData.exhibitinfo.socialdata %>"</h2>
+                        <p>Find ways to promote social sustainability in your communities. Utilize your knowledge (and your selected secret) to uplift and educate others!</p>
+                        <img class="bkg" src="">
+                    </div>
+                <% } %>
+
+                <% if (visitorData.exhibitsvisited.datamap) { 
+                    const responses = [visitorData.exhibitinfo.datamap.q1[0], visitorData.exhibitinfo.datamap.q2[0], visitorData.exhibitinfo.datamap.q3[0]]
+                    const trueCount = responses.filter(response => response[0] === true).length; %>
+                    <div id="datamap" class="section">
+                        <h1>Your overall outlook on sustainability is</h1>
+                        <% if (trueCount >= 2) { %>
+                            <h2 style="color: var(--grass-green);">Positive</h2>
+                            <p>Congratulations on your positive outlook on sustainability! Your commitment to eco-conscious choices can make a significant impact. How might you inspire others to join you in advocating for sustainability? Consider sharing your journey and the positive effects of sustainable practices with your community or social network.</p>
+                        <% } else { %>
+                            <h2 style="color: var(--fall-orange);">Negative</h2>
+                            <p>While it's understandable to face challenges in embracing sustainability, it's crucial to recognize the importance of collective action in addressing environmental concerns.</p> <p>Reflect on what aspects of sustainability seem daunting to you and explore how you can turn these challenges into opportunities for learning and growth. How might you leverage sustainability data to better understand these challenges and contribute to positive change?</p>
+                        <% } %>
+
+                        <h1 style="margin-top: 80px;">Thank you for Becoming The Data!</h1>
+                        <img class="bkg" src="">
+                    </div>
+                <% } %>
+            
             </div>
             
-            <a href="#" class="button yellow">Share your profile</a>
-            <a href="/dotbuilder/<%= visitorData.sessionId %>" class="button red">Add your data to the map</a>
-
-            <hr>
+            <p id="sharelink" style="margin-bottom: 30px; display: none;">Profile link: <a style="color: var(--sunshine-yellow);" href="/profile/<%= docId %>" target="_blank">https://becoming-the-data.web.app/profile/<%= docId %></a></p>
+            <a onclick="share()" class="button yellow" style="margin-bottom: 30px">Share your profile</a>
+            <% if (activeSession) { %>
+                <!-- Show the button only if activeSession is true -->
+                <a href="/dotbuilder/<%= docId %>" class="button red" style="margin-bottom: 30px">Add your data to the map</a>
+            <% } %>
         </div>
+
+        <script>
+            const shareData = {
+                title: "My Becoming The Data Profile",
+                text: "I have become the data at the GT Sustainability DATASEUM. View my profile!",
+                url: "https://becoming-the-data.web.app/profile/" + "<%= docId %>",
+            };
+
+            async function share() {
+                try {
+                    document.getElementById('sharelink').style.display = 'block';
+                    await navigator.share(shareData);
+                    //console.log("shared successfully");
+                } catch (err) {
+                    //console.log(`Error: ${err}`);
+                }
+            }
+        </script>
     </body>
 </html>
