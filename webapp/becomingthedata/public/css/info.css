@@ -79,6 +79,7 @@
     margin-left: 50px;
     margin-right: 50px;
     font-size: 20px;
+    max-width: 600px;
 }
 
 .datadotform {
@@ -154,12 +155,56 @@
 
 .profile {
     margin: 50px;
+    width: 95%;
+    max-width: 800px;
 }
 
-.profile img {
-    width: 80%;
+#personality img {
+    margin-top: 40px;
+    width: 50%;
 }
 
+.profile h1 {
+    display: block;
+}
+
+.profile h2 {
+    font-size: 88px;
+    word-break: normal;
+    word-wrap: break-word;
+}
+
+.profile p {
+    font-size: 1.53em;
+}
+
+.bkg {
+
+}
+
+.section {
+    margin-bottom: 150px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.section:last-child {
+    margin-bottom: 50px;
+}
+
+#fishCanvas {
+    border: 3px solid var(--river-blue);
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background: var(--mist-blue);
+}
+
+@media only screen and (max-width: 572px) { 
+
+    .profile h2 {
+        font-size: 66px;
+    }
+}
 
 @media only screen and (min-width: 572px) { 
     .wrapup {
@@ -168,6 +213,10 @@
         margin-top: 50px;
         margin-bottom: 50px;
         font-size: 30px;
+    }
+
+    .profile h2 {
+        font-size: 66px;
     }
 }
 

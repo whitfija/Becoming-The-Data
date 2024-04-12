@@ -324,7 +324,7 @@ app.get('/finish', checkSession, (req, res)=>{
         })
         .then(() => {
             console.log('Visitor entry updated successfully.');
-            req.session.destroy();
+            //req.session.destroy();
             res.render("pages/finish", {
                 sessionId
             });
@@ -341,7 +341,7 @@ app.get('/end', checkSession, (req, res)=>{
     const sessionId = req.session.sessionId;
     delete req.session.sessionId;
 
-    res.redirect(`/summary/${sessionId}`);
+    res.redirect('/');
 })
 
 /* --------------------- survey info (viewing surveys and storing response) --------------------- */
@@ -382,29 +382,7 @@ app.get('/survey/:description', async (req, res) => {
         } 
         sessionId = req.session.sessionId;
 
-        // update visitor's entry
-        const visitorRef = db.collection('visitors').doc(sessionId);
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            const doc = await visitorRef.get();
-            if (!doc.exists) {
-                throw new Error('Visitor document does not exist');
-            }
-
-            const exhibitName = desctosurvey[description];
-            const exhibitsvisited = doc.data().exhibitsvisited || {};
-            exhibitsvisited[exhibitName] = true;
-
-            await visitorRef.update({
-                exhibitsvisited: exhibitsvisited
-            });
-
-            res.render("pages/experiences/" + fileName, { sessionId });
-        } catch (error) {
-            functions.logger.error("Error updating visitor's entry:", error);
-            res.status(500).send("Error updating visitor's entry");
-        }
+        res.render("pages/experiences/" + fileName, { sessionId });
     } else {
         // unrecognized
         functions.logger.info("Unrecognized description:", description);
@@ -413,21 +391,28 @@ app.get('/survey/:description', async (req, res) => {
 });
 
 // save survey response
-app.post('/survey/submit', checkSession, (req, res) => {
-    const { exhibitName, data } = req.body;
-    const sessionId = req.session.sessionId;
+app.post('/survey/submit', checkSession, async (req, res) => {
+    try {
+        const { exhibitName, data } = req.body;
+        const sessionId = req.session.sessionId;
 
-    const visitorRef = db.collection('visitors').doc(sessionId);
-    visitorRef.update({
-        [`exhibitinfo.${exhibitName}`]: data
-    })
-    .then(() => {
+        const visitorRef = db.collection('visitors').doc(sessionId);
+        
+        // Update exhibitinfo
+        await visitorRef.update({
+            [`exhibitinfo.${exhibitName}`]: data
+        });
+
+        // Update exhibitsvisited
+        await visitorRef.update({
+            [`exhibitsvisited.${exhibitName}`]: true
+        });
+
         res.status(200).send('Survey response submitted successfully.');
-    })
-    .catch(error => {
-        console.error('Error updating exhibitinfo:', error);
+    } catch (error) {
+        console.error('Error updating exhibitsvisited:', error);
         res.status(500).send('Failed to submit survey response.');
-    });
+    }
 });
 
 // get airquality from api https://aqicn.org/api/
@@ -449,13 +434,14 @@ app.get('/api/airquality', async (req, res) => {
 // display profile
 app.get('/profile/:id', (req, res)=>{
     const sessionId = req.params.id;
+    const activeSession = req.query.activesession === 'true';
 
     // get visitor data from Firebase
     db.collection('visitors').doc(sessionId).get()
     .then((doc) => {
         if (doc.exists) {
             const visitorData = doc.data();
-            res.render("pages/profile", { visitorData });
+            res.render("pages/profile", { visitorData, docId: doc.id,  activeSession });
         } else {
             console.error('Visitor not found');
             res.redirect('/');
