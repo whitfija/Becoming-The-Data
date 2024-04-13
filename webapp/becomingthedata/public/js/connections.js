@@ -59,6 +59,10 @@ function checkAnswer() {
     selectedCardCount = 0;
     const selectedWords = document.querySelectorAll('.board .selected');
     selectedWords.forEach(word => word.classList.remove('selected'));
+
+    var guessesLeft = 5-wrongGuessCount;
+    var guessFraction = (guessesLeft + " guesses remaining");
+    document.getElementById('wrongGuessCount').innerHTML = (guessFraction);
 }
 
 function selectWord(word) {
@@ -76,6 +80,17 @@ function selectWord(word) {
         }
         selectedCardCount--;
     }
+}
+
+function deselectAll() {
+    const selectedWords = document.querySelectorAll('.board .selected');
+    selectedWords.forEach(word => word.classList.remove('selected'));
+    selected=[];
+    selectedCardCount = 0;
+
+    console.log("selected: ", selected);
+    console.log("selected card count:", selectedCardCount)
+
 }
 
 function randomizeBoard() {
@@ -133,4 +148,10 @@ window.onload = function() {
         var groupElement = document.getElementById(group);
         groupElement.querySelector('.group-words').textContent = groupWords;
     }
+
+
+    
+    
+
+
 }
