@@ -54,9 +54,9 @@
 }
 
 .board a:hover {
-    box-shadow: 3px var(--ash-black);
+    /* box-shadow: 3px var(--ash-black);
     cursor: pointer;
-    border: 5px solid var(--fall-orange);
+    border: 5px solid var(--fall-orange); */
 }
 
 .selected {

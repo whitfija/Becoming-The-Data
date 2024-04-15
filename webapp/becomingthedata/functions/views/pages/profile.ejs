@@ -102,9 +102,9 @@
                         <% const difference = aqi - 38;
                             let comparisonText = "";
                             if (difference > 0) {
-                                comparisonText = `${difference} higher than`;
+                                comparisonText = `${difference} lower than`;
                             } else if (difference < 0) {
-                                comparisonText = `${-difference} lower than`;
+                                comparisonText = `${-difference} higher than`;
                             } else {
                                 comparisonText = "equal to";
                             }

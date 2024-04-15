@@ -1,1 +1,6 @@
-{}
+{
+  "dependencies": {
+    "axios": "^1.6.8",
+    "firebase-functions": "^4.9.0"
+  }
+}
