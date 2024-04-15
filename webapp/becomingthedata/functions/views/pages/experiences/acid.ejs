@@ -21,7 +21,7 @@
                 <img src="/img/exhibit/acid.png" alt="Large Image" class="large-image">
 
                 <div class="quiz" style="width: 90%;">
-                    <h2 class="prompt">Find the correct groups of 4 out of the following acid rain related terms.</h2>
+                    <h2 class="prompt">Use your acid rain knowledge to create groups of 4!</h2>
                     <h2 class="prompt" id="alert"></h2>
 
                     <div class="connections">
@@ -44,8 +44,17 @@
                             </div>
                         </div>
                         <div class="board"></div>
-                        <a id="rand" onclick="randomizeBoard()" class="button darkgreen" >Randomize.</a>
-                        <a id="checkanswer" onclick="checkAnswer()" class="button red" >Check answer.</a>
+
+                        <p id="wrongGuessCount"></p>
+                        
+                        <a id="rand" onclick="randomizeBoard()" class="button darkgreen" >Randomize</a>
+
+                        <a id="unclickanswer" onclick="deselectAll()" class="button darkgreen " >Deselect</a>
+
+                        <a id="checkanswer" onclick="checkAnswer()" class="button red" >Submit</a>
+
+
+                        
                         <a id="giveup" onclick="submitSurveyResponse('acid', {'completed': win, 'errors': wrongGuessCount})" class="button yellow" style="display: none;">Give Up.</a>
                         <a id="submit" onclick="submitSurveyResponse('acid', {'completed': win, 'errors': wrongGuessCount})" class="button red" style="display: none;">Submit results.</a>
                     </div>

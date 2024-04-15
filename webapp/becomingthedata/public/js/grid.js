@@ -10,9 +10,9 @@ reliableSlider.oninput = function() {
 var moneySlider = document.getElementById("rangeMoney");
 var moneyOutput = document.getElementById("outputMoney");
 var prevMoneyValue = moneySlider.value;
-moneyOutput.innerHTML = '$' + parseFloat(moneySlider.value).toFixed(2);
+moneyOutput.innerHTML = '$' + parseFloat(moneySlider.value).toFixed(0);
 moneySlider.oninput = function() {
-    moneyOutput.innerHTML = '$' + parseFloat(this.value).toFixed(2);
+    moneyOutput.innerHTML = '$' + parseFloat(this.value).toFixed(0);
 
     // falling images
 
