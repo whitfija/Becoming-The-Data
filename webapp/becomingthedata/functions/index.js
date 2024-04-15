@@ -103,10 +103,12 @@ const exhibitNames = {
     'oceans': 'Accessible Oceans',
     'airquality': 'Air Quality Data Literacy',
     'socialdata': 'Atlanta Arrest Data',
-    'gridgame': 'Electrical Grid Management',
+    'gridgame': 'Managing Electrical Grids',
     'acid': 'Acid Rain',
     'datamap': ' MR Interactive Dataseum Map'
 };
+
+const customOrder = ['oceans', 'airquality', 'acid', 'socialdata', 'datamap', 'gridgame'];
 
 /* ------------------------------------------ functions ------------------------------------------ */
 
@@ -301,7 +303,16 @@ app.get('/summary', checkSession, (req, res)=>{
             if (doc.exists) {
                 const data = doc.data();
                 const exhibitsVisited = data.exhibitsvisited || {};
-                res.render("pages/checklist", { sessionId, exhibitsVisited, exhibitNames });
+
+                // order
+                const orderedExhibitsVisited = {};
+                customOrder.forEach(exhibitName => {
+                    if (exhibitsVisited.hasOwnProperty(exhibitName)) {
+                        orderedExhibitsVisited[exhibitName] = exhibitsVisited[exhibitName];
+                    }
+                });
+
+                res.render("pages/checklist", { sessionId, exhibitsVisited: orderedExhibitsVisited, exhibitNames });
             } else {
                 res.status(404).send('Visitor entry not found.');
             }

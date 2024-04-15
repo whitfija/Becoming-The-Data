@@ -119,27 +119,32 @@
                         <% const completed = visitorData.exhibitinfo.acid.completed;
                             const errors = visitorData.exhibitinfo.acid.errors;
                             let acidExpertise = "";
+                            let desc = "";
                             let errorDisplay = "";
                         
                             if (completed) {
                                 if (errors === 0) {
                                     acidExpertise = "expert!";
+                                    desc = " You completed the grouping challenge with:"
                                     errorDisplay = `${errors} errors`;
                                 } else {
-                                    acidExpertise = "trainee";
+                                    acidExpertise = "trainee.";
+                                    desc = "You completed the grouping challenge with:"
                                     errorDisplay = `${errors} errors`;
                                 }
                             } else {
-                                acidExpertise = "student";
+                                acidExpertise = "student.";
+                                desc = "You did not successfully complete the grouping challenge. Keep learning!"
                             } %>
                         <h1>You are an <span style="color: var(--grass-green)">acid rain <%= acidExpertise %></span></h1>
+                        <p><%= desc %></p>
 
                         <% if (completed) { %>
                             <h1>You completed the challenge with</h1>
                             <h2 style="color: var(--fall-orange);"><%= errorDisplay %></h2>
                         <% } %>
 
-                        <p>Share your knowledge with the world, and help prevent acid rain and it's effects.</p>
+                        <p>Share the information you got from the experience and help prevent acid rain and it's effects!</p>
                         <img class="bkg" src="">
                     </div>
                 <% } %>
@@ -155,7 +160,7 @@
 
                 <% if (visitorData.exhibitsvisited.datamap) { 
                     const responses = [visitorData.exhibitinfo.datamap.q1[0], visitorData.exhibitinfo.datamap.q2[0], visitorData.exhibitinfo.datamap.q3[0]]
-                    const trueCount = responses.filter(response => response[0] === true).length; %>
+                    const trueCount = responses.filter(response => response === true).length; %>
                     <div id="datamap" class="section">
                         <h1>Your overall outlook on sustainability is</h1>
                         <% if (trueCount >= 2) { %>
@@ -174,10 +179,11 @@
             </div>
             
             <p id="sharelink" style="margin-bottom: 30px; display: none;">Profile link: <a style="color: var(--sunshine-yellow);" href="/profile/<%= docId %>" target="_blank">https://becoming-the-data.web.app/profile/<%= docId %></a></p>
-            <a onclick="share()" class="button yellow" style="margin-bottom: 30px">Share your profile</a>
+            <a onclick="share()" class="button yellow">Share your profile</a>
+            <a href="/map" class="button red" style="margin-bottom: 30px">View mobile map.</a>
             <% if (activeSession) { %>
                 <!-- Show the button only if activeSession is true -->
-                <a href="/dotbuilder/<%= docId %>" class="button red" style="margin-bottom: 30px">Add your data to the map</a>
+                <a href="/dotbuilder/<%= docId %>" class="button blue" style="margin-bottom: 30px">Add your data to the map</a>
             <% } %>
         </div>
 
