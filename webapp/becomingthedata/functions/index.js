@@ -103,10 +103,12 @@ const exhibitNames = {
     'oceans': 'Accessible Oceans',
     'airquality': 'Air Quality Data Literacy',
     'socialdata': 'Atlanta Arrest Data',
-    'gridgame': 'Electrical Grid Management',
+    'gridgame': 'Managing Electrical Grids',
     'acid': 'Acid Rain',
     'datamap': ' MR Interactive Dataseum Map'
 };
+
+const customOrder = ['oceans', 'airquality', 'acid', 'socialdata', 'datamap', 'gridgame'];
 
 /* ------------------------------------------ functions ------------------------------------------ */
 
@@ -132,8 +134,10 @@ function getVisitorData(sessionId) {
         visitorRef.get()
             .then(doc => {
                 if (!doc.exists) {
-                    reject(new Error('Visitor data not found'));
+                    functions.logger.info('did not find visitor')
+                    reject(new Error('Visitor data not found: ' + sessionId));
                 } else {
+                    //functions.logger.info(doc.data())
                     resolve(doc.data());
                 }
             })
@@ -147,11 +151,14 @@ function getVisitorData(sessionId) {
 async function fetchDotsFromFirestore() {
     const dotsRef = db.collection('dots');
     const snapshot = await dotsRef.get();
-    const dots = [];
-    snapshot.forEach(doc => {
+    dots = [];
+    await Promise.all(snapshot.docs.map(async doc => {
         const dotData = doc.data();
+        dotData.visitorData = await getVisitorData(dotData.sessionId);
         dots.push(dotData);
-    });
+        //functions.logger.info(dotData.visitorData.exhibitsvisited);
+    }));
+    //functions.logger.info('final', dots)
     return dots;
 }
 
@@ -178,6 +185,7 @@ function getDotData(sessionId) {
             .then(snapshot => {
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
+                        doc.data().visitorData = getVisitorData(sessionId)
                         resolve(doc.data());
                     });
                 } else {
@@ -301,7 +309,16 @@ app.get('/summary', checkSession, (req, res)=>{
             if (doc.exists) {
                 const data = doc.data();
                 const exhibitsVisited = data.exhibitsvisited || {};
-                res.render("pages/checklist", { sessionId, exhibitsVisited, exhibitNames });
+
+                // order
+                const orderedExhibitsVisited = {};
+                customOrder.forEach(exhibitName => {
+                    if (exhibitsVisited.hasOwnProperty(exhibitName)) {
+                        orderedExhibitsVisited[exhibitName] = exhibitsVisited[exhibitName];
+                    }
+                });
+
+                res.render("pages/checklist", { sessionId, exhibitsVisited: orderedExhibitsVisited, exhibitNames });
             } else {
                 res.status(404).send('Visitor entry not found.');
             }
@@ -482,6 +499,7 @@ app.get('/api/dots', (req, res) => {
 app.get('/map', async (req, res) => {
     try {
         dots = await fetchDotsFromFirestore();
+        //functions.logger.info(dots)
         res.render("pages/map", { dots });
     } catch (error) {
         console.error('Error fetching dots:', error);
@@ -514,6 +532,7 @@ app.get('/map/add/:id', async (req, res)=>{
             const addedDotSnapshot = await db.collection('dots').doc(dotId).get();
             const addedDotData = addedDotSnapshot.data();
             if (addedDotData) {
+                addedDotData.visitorData = visitorData
                 dots.push(addedDotData);
             } else {
                 console.error('Error: Added dot data is null');
@@ -539,13 +558,13 @@ app.get('/map/update/:id', async (req, res) => {
         const querySnapshot = await db.collection('dots').where('sessionId', '==', sessionId).get();
         if (!querySnapshot.empty) {
             querySnapshot.forEach(doc => {
-                // pdate dot location in Firestore
+                // update dot location in Firestore
                 doc.ref.update({
                     latitude: parseFloat(latitude),
                     longitude: parseFloat(longitude)
                 });
 
-                // pdate dot location in the EJS dots array
+                // update dot location in the EJS dots array
                 dots.forEach(dot => {
                     if (dot.sessionId === sessionId) {
                         dot.latitude = parseFloat(latitude);

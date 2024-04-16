@@ -5,6 +5,7 @@
         <%- include('../../includes/head'); %>
         <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/airquality.css">
     </head>
 
     <body>
@@ -13,7 +14,7 @@
         </div>
         <div id="content" class="center">
             <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
-            <h1 class="title3">Session: <%= sessionId %></h1><hr>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
 
             <div class="survey">
                 <h1 class="title">Exhibit: Air Quality Data Literacy.</h1>
@@ -26,9 +27,29 @@
                         <a id="btnguess" onclick="check()" class="button peach" >Check</a>
                     </div>
 
-                    <div class="question">
-                        <h2 class="prompt">Based on what you learned in the exhibit, how high would the AQI need to be for you to feel the need to change your behavior for your health? (i.e. wear a mask, stay inside, etc.)</h2>
-                        <input id="aqilimit" class="answer" type="number" min="0" max="500"  placeholder="AQI" style="font-size: 50px; width: 200px; text-align: center;"></input>
+                    <div class="sliderquestion">
+                        <h2 class="prompt">Based on what you learned in the exhibit, how high would the AQI need to be for you to feel the need to change your behavior for your health? (i.e. wear a mask, stay inside, etc.)</h2> 
+                        <div class="base-parent">
+                            <div class="base">
+                                <input id="aqilimit" hidden type="range" min="0" max="500" value="0" step="1">
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="base-notch"></div>
+                                <div class="knob">
+                                    <div class="knob-notch"></div>
+                                </div>
+                                <div class="knob-shadow"></div>
+                                <div class="value">0</div>
+                            </div>
+                        </div>
+                        <h2 class="prompt" id="aqisection" style="color: var(--grass-green); margin-bottom: 30px;">Good</h2> 
+                          
                     </div>
 
                     <a onclick="submitSurveyResponse('airquality', {'correct': correct, 'personalaqilimit': parseInt(document.getElementById('aqilimit').value)})" class="button red" >Submit responses.</a>

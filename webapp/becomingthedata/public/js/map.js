@@ -50,12 +50,34 @@ async function updateMap() {
                 event.target.setStyle({ fillOpacity: 0.7 });
             });
 
+            fishtext = ''
+            if (dotData.visitorData.exhibitsvisited.oceans) { 
+                fishtext = `<canvas id="fishCanvas${dotData.sessionId}" class="fishCanvas" width="300" height="300""></canvas><h2 class="fishName">${dotData.visitorData.exhibitinfo.oceans.name}</h2>`
+            }
+
             dotMarker.bindPopup(`
-                <img src="/img/personalities/${dotData.group}.png" style="width: 100%; height: auto">
+                <div class=popupcustom>
+                <img src="/img/personalities/${dotData.group}.png" style="width: 150px; height: auto"><br>
+                ${fishtext}
                 <p>Created: ${new Date(dotData.timestamp).toLocaleString()}</p>
+                </div>
             `);
 
             dotMarkers.push(dotMarker);
+
+            // draw fish
+            dotMarker.on('popupopen', function () {
+                if (dotData.visitorData.exhibitsvisited.oceans) {
+                    var imageData = dotData.visitorData.exhibitinfo.oceans.canvas;
+                    var canvas = document.getElementById('fishCanvas' + dotData.sessionId);
+                    var ctx = canvas.getContext('2d');
+                    var img = new Image();
+                    img.onload = function() {
+                        ctx.drawImage(img, 0, 0);
+                    };
+                    img.src = imageData;
+                }
+            });
         });
     } catch (error) {
         console.error('Error updating map:', error);
@@ -63,7 +85,7 @@ async function updateMap() {
 }
 
 // timer to periodically update map
-const refreshInterval = 10000; // 1 minute (adjust as needed)
+const refreshInterval = 20000; //
 setInterval(updateMap, refreshInterval);
 
 // tooltip

@@ -22,11 +22,7 @@
             <div class="exhibit-list">
                 <% Object.entries(exhibitsVisited).forEach(([exhibit, visited]) => { %>
                     <div class="exhibit-item <%= visited ? 'visited' : 'not-visited' %>">
-                        <a href="/scanner" >
-                            <img src="/img/exhibit/<%= exhibit %>.png" alt="<%= exhibit %>">
-
-                        </a>
-                        
+                        <a href="/scanner"><img src="/img/exhibit/<%= exhibit %>.png" alt="<%= exhibit %>"></a>
                         <p><%= exhibitNames[exhibit] %></p>
                         <p class="<%= visited ? 'visited-text' : 'not-visited-text' %>"><%= visited ? 'Visited' : 'Not visited' %></p>
                     </div>
@@ -37,7 +33,5 @@
                 <a href="/finish" class="button red">Finalize your experience</a>
             </div>
         </div>
-
-        <script>console.log("<%= exhibitsVisited['oceans'] %>")</script>
     </body>
 </html>

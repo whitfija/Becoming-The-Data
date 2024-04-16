@@ -10,6 +10,10 @@ var wrongGuessCount = 0;
 var win = false;
 
 function checkAnswer() {
+    if (selectedCardCount < 4) {
+        return;
+    }
+
     var correct = false;
     var correctGroup = '';
 
@@ -45,13 +49,14 @@ function checkAnswer() {
     } else {
         // incorrect answer
         const alert = document.getElementById('alert');
-        alert.textContent = 'Those words did not make a group, try again';
+        alert.textContent = 'Incorrect group, try again';
         alert.style.color = 'var(--fall-orange)';
         wrongGuessCount++;
 
         // give up button after 5 wrong guesses
         if (wrongGuessCount >= 5) {
             document.getElementById('giveup').style.display = 'block';
+            loseGame();
         }
     }
 
@@ -60,14 +65,16 @@ function checkAnswer() {
     const selectedWords = document.querySelectorAll('.board .selected');
     selectedWords.forEach(word => word.classList.remove('selected'));
 
-    var guessesLeft = 5-wrongGuessCount;
-    var guessFraction = (guessesLeft + " guesses remaining");
-    document.getElementById('wrongGuessCount').innerHTML = (guessFraction);
 }
 
 function selectWord(word) {
     const alert = document.getElementById('alert');
-    alert.textContent = "";
+
+    var guessesLeft = 5-wrongGuessCount;
+    var guessFraction = (guessesLeft + " guesses remaining");
+    alert.style.color = null;
+    alert.textContent = guessFraction;
+
     if (selectedCardCount < 4 && !word.classList.contains('selected')) {
         word.classList.add('selected');
         selected.push(word.innerText);
@@ -103,6 +110,7 @@ function randomizeBoard() {
 function handleButtonVisibility() {
     const checkButton = document.getElementById('checkanswer');
     const randButton = document.getElementById('rand');
+    const deselectButton = document.getElementById('unclickanswer');
     const giveUpButton = document.getElementById('giveup');
     const submitButton = document.getElementById('submit');
     const boardWords = document.querySelectorAll('.board a');
@@ -112,13 +120,40 @@ function handleButtonVisibility() {
         // win
         win = true;
         const alert = document.getElementById('alert');
-        alert.textContent = 'Correct, congratulations! Submit your results below';
+        alert.textContent = 'Correct, congratulations! Submit your results below.';
         alert.style.color = 'var(--grass-green)';
         checkButton.style.display = 'none';
         randButton.style.display = 'none';
         giveUpButton.style.display = 'none';
+        deselectButton.style.display = 'none';
         submitButton.style.display = 'block';
     }
+}
+
+function loseGame() {
+    const checkButton = document.getElementById('checkanswer');
+    const randButton = document.getElementById('rand');
+    const deselectButton = document.getElementById('unclickanswer');
+    const giveUpButton = document.getElementById('giveup');
+    const submitButton = document.getElementById('submit');
+    const groups = document.querySelectorAll('.correct-answers div');
+    const board = document.getElementsByClassName('board')[0];
+    const alert = document.getElementById('alert');
+
+    alert.textContent = 'Nice try! Here are the correct groups. Submit your results below.';
+    alert.style.color = 'var(--fall-orange)';
+
+    checkButton.style.display = 'none';
+    randButton.style.display = 'none';
+    giveUpButton.style.display = 'none';
+    submitButton.style.display = 'block';
+    deselectButton.style.display = 'none';
+    board.style.display = 'none';
+
+    groups[0].style.display = 'block';
+    groups[1].style.display = 'block';
+    groups[2].style.display = 'block';
+    groups[3].style.display = 'block';
 }
 
 window.onload = function() {

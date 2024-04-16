@@ -43,11 +43,11 @@ moneySlider.oninput = function() {
         img.style.left = randomLeft + '%';
 
         document.body.appendChild(img);
-        console.log("added img")
+        //console.log("added img")
 
         img.addEventListener('animationend', function() {
             img.remove();
-            console.log("removed img")
+            //console.log("removed img")
         });
     }
 }
