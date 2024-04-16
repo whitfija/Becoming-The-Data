@@ -88,17 +88,17 @@
                                 textColor = "var(--fall-orange)";
                             } else if (aqi >= 201 && aqi <= 300) {
                                 aqiCategory = "Very Unhealthy";
-                                textColor = "var(--sunshine-yellow)";
+                                textColor = "var(--red-clay)";
                             } else if (aqi >= 301 && aqi <= 500) {
                                 aqiCategory = "Hazardous";
                                 textColor = "#841cbc";
                             }
                         %>
                         <p>You determined that an AQI of <span style="color: <%= textColor %>"><%= visitorData.exhibitinfo.airquality.personalaqilimit %></span> is enough for you to take action.</p>
-                        <h1>This AQI is considered</h1>
-                        <h2 style="color: <%= textColor %>"><%= aqiCategory %></h2>
-                        <h1>in 2023, the average AQI in the US was:</h1>
-                        <h2 style="color: var(--grass-green)">38</h2>
+                        <h1>This AQI is considered:</h1>
+                        <h2 style="color: <%= textColor %>; font-size: 60px"><%= aqiCategory %></h2>
+                        <p>in 2023, the average AQI in the US was:</p>
+                        <h2 style="color: var(--grass-green)">38 - Good</h2>
                         <% const difference = aqi - 38;
                             let comparisonText = "";
                             if (difference > 0) {
@@ -152,7 +152,7 @@
                 <% if (visitorData.exhibitsvisited.socialdata) { %>
                     <div id="socialdata" class="section">
                         <h1>You identified the secret to social sustainability to be:</h1>
-                        <h2 style="color: var(--sunshine-yellow);">"<%= visitorData.exhibitinfo.socialdata %>"</h2>
+                        <h2 style="color: var(--sunshine-yellow); font-size: 50px;">"<%= visitorData.exhibitinfo.socialdata %>"</h2>
                         <p>Find ways to promote social sustainability in your communities. Utilize your knowledge (and your selected secret) to uplift and educate others!</p>
                         <img class="bkg" src="">
                     </div>

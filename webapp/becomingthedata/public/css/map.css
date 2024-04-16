@@ -4,6 +4,11 @@
     justify-content: center;
     height: 100vh;
     width: 100%;
+    filter: saturate(0.5);
+}
+
+.leaflet-interactive {
+    filter: saturate(1.5);
 }
 
 #save {
@@ -107,6 +112,32 @@
 
 #tooltip-toggle:hover {
     opacity: 100%;
+}
+
+.fishCanvas {
+    border: 3px solid var(--river-blue);
+    border-radius: 3px;
+    margin-bottom: 0;
+    background: var(--mist-blue);
+    max-width: 70px;
+}
+
+.fishName {
+    font-size: 18px;
+    text-align: center;
+    color: var(--river-blue);
+    height: 40px;
+    width: 300px;
+    resize: none;
+    margin: 0;
+}
+
+.popupcustom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 @media only screen and (max-width: 550px) { 

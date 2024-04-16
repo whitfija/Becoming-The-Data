@@ -1,0 +1,222 @@
+.sliderquestion {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 100%;
+    height: 100px;
+    border-radius: 5px;  
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    max-width: 800px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    transform: rotate(-90deg);
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    cursor: pointer;
+    background: var(--grass-green);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--grass-green);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.sliderquestion:nth-child(odd) .slider::-webkit-slider-thumb {
+    background: var(--sunshine-yellow);
+}
+.sliderquestion:nth-child(odd) .slider::-moz-range-thumb {
+    background: var(--sunshine-yellow);
+}
+
+.slideroutput {
+    font-size: 88px;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 2px var(--grass-green);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+:root {
+--light1: rgb(255 255 255 / 6.25%);
+--light2: rgb(255 255 255 / 12.5%);
+--light3: rgb(255 255 255 / 25%);
+--dark1: rgb(0 0 0 / 25%);
+--dark2: rgb(0 0 0 / 50%);
+--dark3: rgb(0 0 0 / 75%);
+--led: #fc8553;
+--led2: #ff4576;
+--bg: #242327;
+}
+
+
+.base-parent {
+width: 200px;
+height: 200px;
+margin: 30px;
+margin-bottom: 0;
+}
+
+.base {
+position: relative;
+width: 100%;
+height: 100%;
+border: 1px solid var(--light1);
+border-radius: 50%;
+box-shadow: inset 0 -10px 20px var(--dark3), inset 0 10px 20px var(--light2);
+background-color: var(--bg);
+}
+
+.base-notch {
+position: absolute;
+transform: translate(-50%, -50%);
+width: 4%;
+height: 4%;
+background-color: var(--light3);
+border-radius: 999px;
+transition: all .2s ease-in;
+}
+
+.base-notch:nth-of-type(1) {
+    top: 80.052%;
+    left: 19.948%;
+}
+
+.base-notch:nth-of-type(2) {
+    top: 58.6515%;
+    left: 8.92325%;
+}
+
+.base-notch:nth-of-type(3) {
+    top: 34.0191%;
+    left: 10.9168%;
+}
+
+.base-notch:nth-of-type(4) {
+    top: 14.8322%;
+    left: 26.9054%;
+}
+
+.base-notch:nth-of-type(5) {
+    top: 7.5%;
+    left: 50%;
+}
+
+.base-notch:nth-of-type(6) {
+    top: 14.8322%;
+    left: 73.9054%;
+}
+
+.base-notch:nth-of-type(7) {
+    top: 34.0191%;
+    left: 89.3832%;
+}
+
+.base-notch:nth-of-type(8) {
+    top: 58.6515%;
+    left: 91.9768%;
+}
+
+.base-notch:nth-of-type(9) {
+    top: 80.052%;
+    left: 80.052%;
+  }
+
+.knob {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    transform: rotate(-135deg);
+    width: 70%;
+    height: 70%;
+    background-color: var(--light3);
+    border-radius: 50%;
+    transition: box-shadow .4s ease-in;
+}
+
+.knob-shadow {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-image: linear-gradient(0deg, var(--dark2), var(--light3));
+    box-shadow: 0 10px 20px var(--dark3), 0 -10px 20px var(--light2);
+}
+
+.knob-notch {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6%;
+    height: 15%;
+    background-color: var(--light3);
+    border-radius: 20px;
+    transition: all .4s ease-in;
+}
+
+.knob-active {
+    box-shadow: 0 0 20px -8px var(--light3);
+}
+
+.notch-active {
+    box-shadow: 0 0 8px var(--light3);
+}
+
+.value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--grass-green);
+    text-shadow: 0 0 20px var(--dark3);
+    transition: all .6s ease-in;
+}
+
+.value-active {
+    color: var(--led);
+    text-shadow: 0 0 20px var(--light3);
+}

@@ -45,6 +45,8 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
+            map.getContainer().style.filter = 'saturate(0.5)';
+
             // dots
             <% dots.forEach(dot => { %>
                 var dotMarker = L.circleMarker([<%= dot.longitude %>, <%= dot.latitude %>], {
@@ -63,11 +65,34 @@
                 });
 
                 dotMarker.bindPopup(`
-                    <img src="/img/personalities/<%= dot.group %>.png" style="width: 100%; height: auto">
+                    <div class=popupcustom>
+                    <img src="/img/personalities/<%= dot.group %>.png" style="width: 150px; height: auto"><br>
+                    <% if (dot.visitorData.exhibitsvisited.oceans) { %>
+                        <canvas id="fishCanvas<%= dot.sessionId %>" class="fishCanvas" width="300" height="300"></canvas>
+                        <h2 class="fishName"><%= dot.visitorData.exhibitinfo.oceans.name %></h2>
+                    <% } %>
                     <p>Created: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
+                    </div>
                 `);
 
                 dotMarkers.push(dotMarker);
+
+                // draw fish
+                dotMarker.on('popupopen', function () {
+                    if (<%= dot.visitorData.exhibitsvisited.oceans %>) {
+                        var imageData = "<%= dot.visitorData.exhibitinfo.oceans.canvas %>";
+                        var canvas = document.getElementById('fishCanvas<%= dot.sessionId %>');
+                        var ctx = canvas.getContext('2d');
+                        var img = new Image();
+                        img.onload = function() {
+                            ctx.drawImage(img, 0, 0);
+                        };
+                        img.src = imageData;
+                    }
+                });
+
+
+
             <% }); %>
         });
     
