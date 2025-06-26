@@ -1,5 +1,6 @@
 # Becoming-The-Data
 Interactive data collection/visualization software for GATech's "Dataseum" exhibit. 
+View the site @ https://becoming-the-data.web.app/
 Hosted in Price Gilbert Library, April 2024.
 
 Spring 2024 CS4605 Project
