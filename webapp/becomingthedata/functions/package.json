@@ -20,7 +20,8 @@
     "express-session": "^1.18.0",
     "firebase-admin": "^11.11.1",
     "firebase-functions": "^4.3.1",
-    "firestore-store": "^2.0.2"
+    "firestore-store": "^2.0.2",
+    "interactjs": "^1.10.27"
   },
   "devDependencies": {
     "firebase-functions-test": "^3.1.0",

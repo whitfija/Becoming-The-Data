@@ -87,7 +87,8 @@ const desctosurvey = {
     'atlanta_arrest_data': 'socialdata',
     'electrical_grid_game': 'gridgame',
     'acid_rain': 'acid',
-    'the_dataseum_data_map': 'datamap'
+    'the_dataseum_data_map': 'datamap',
+    'me_bubble': 'mebubble'
 };
 
 // check if session exists
@@ -105,10 +106,11 @@ const exhibitNames = {
     'socialdata': 'Atlanta Arrest Data',
     'gridgame': 'Managing Electrical Grids',
     'acid': 'Acid Rain',
-    'datamap': ' MR Interactive Dataseum Map'
+    'datamap': 'MR Interactive Dataseum Map',
+    'mebubble': 'Language & Heritage'
 };
 
-const customOrder = ['oceans', 'airquality', 'acid', 'socialdata', 'datamap', 'gridgame'];
+const customOrder = ['oceans', 'airquality', 'acid', 'mebubble', 'socialdata', 'datamap', 'gridgame'];
 
 /* ------------------------------------------ functions ------------------------------------------ */
 
@@ -273,8 +275,8 @@ app.get('/start', (req, res)=>{
             group: assignedPersonality,
             starttime: startTime,
             endtime: null,
-            exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false},
-            exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': ''}
+            exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false, 'mebubble': false},
+            exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': '', 'mebubble': ''}
         };
 
         visitorRef.set(visitorData)
@@ -384,8 +386,8 @@ app.get('/survey/:description', async (req, res) => {
             const assignedPersonality = Math.floor(Math.random() * 8) + 1; // random number between 1 and 8
             const visitorData = {
                 sessionId: sessionId, active: true, group: assignedPersonality, starttime: startTime, endtime: null,
-                exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false},
-                exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': ''}
+                exhibitsvisited: {'oceans': false, 'airquality': false, 'socialdata': false, 'gridgame': false, 'acid': false, 'datamap': false, 'mebubble': false},
+                exhibitinfo: {'oceans': '', 'airquality': '', 'socialdata': '', 'gridgame': '', 'acid': '', 'datamap': '', 'mebubble': ''}
             };
 
             visitorRef.set(visitorData)

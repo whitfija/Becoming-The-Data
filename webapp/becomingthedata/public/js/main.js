@@ -9,7 +9,6 @@ function submitSurveyResponse(exhibitName, data) {
     .then(response => {
         if (response.ok) {
             console.log('Survey response submitted successfully.');
-            // Redirect to the summary page
             window.location.href = '/summary';
         } else {
             console.error('Failed to submit survey response.');

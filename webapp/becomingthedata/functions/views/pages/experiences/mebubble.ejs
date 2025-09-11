@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Language & Heritage | GT Dataseum</title>
+        <%- include('../../includes/head'); %>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/data.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/survey.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/bubble.css">
+        <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    </head>
+
+    <body>
+        <div class="logo">
+            <img src="/img/transparent_logo.svg" alt="Logo">
+        </div>
+        <div id="content" class="center">
+            <div style="margin-top: 50px;"><%- include('../../includes/dataseumtitle'); %></div>
+            <h1 class="title3" style="display: none;">Session: <%= sessionId %></h1><hr>
+
+            <div class="survey">
+                <h1 class="title">Exhibit: Language & Heritage</h1>
+                <img src="/img/exhibit/mebubble.png" alt="Me Bubble" class="large-image">
+
+                <div class="quiz">
+                    <h2 class="prompt">Click and drag attributes you identify with to create your Me Bubble!</h2>
+                    <div class="bubblecategories">
+                        <a class="button orange" onclick="showHeritage()">Heritage</a>
+                        <a class="button blue" onclick="showLanguage()">Language</a>
+                    </div>
+                    <div class="bubblecreator">
+                        <h2 class="selectheader">Attributes</h2>
+                        <div class="bubbleselect"></div>
+                        <div class="mebubblecontainer">
+                            <h2 class="selectheader" style="margin-top: -15px; margin-bottom: 15px; position: relative;">Your Bubble</h2>
+                            <div class="mebubble"></div>
+                        </div>
+                    </div>
+                    <a class="button yellow" onclick="saveBubble()">Save your bubble</a>
+                    <a onclick="submitSurveyResponse('mebubble', SOMETHINGNEEDSTOGOHEREFORSUBMISSION)" class="button red" style="display: none;">Submit your bubble.</a>
+                </div>
+            </div>
+        </div>
+        <script src="/js/bubble.js"></script>
+        <script>buildBubbles(); sortBubbles(); showDefault()</script>
+    </body>
+</html>

@@ -158,6 +158,22 @@
                     </div>
                 <% } %>
 
+                <% if (visitorData.exhibitsvisited.mebubble) { %>
+                    <div id="mebubble" class="section" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <h1 style="margin-bottom: 50px;">Here is your 'Me Bubble' of heritage and language!:</h1>
+                        <div class="mebubble">
+                            <% visitorData.exhibitinfo.mebubble.forEach(bubble => { %>
+                                <div class="bubble <%= bubble.type %>" style="position: absolute; left: <%= bubble.position.left %>px; top: <%= bubble.position.top %>px;">
+                                    <%= bubble.text %>
+                                </div>
+                            <% }); %>
+                        </div>
+                        <h1>You included <span style="color: var(--river-blue)"><%= visitorData.exhibitinfo.mebubble.length %> categories</span>!</h1>
+                        <h1 style="margin-bottom: 50px;">Do you feel your bubble properly represents you and your background?</h1>
+                        <p>Many find the categories listed on the US census do not fully encapsulate the various combinations of cultures, heritages, and languages that make up our population.</p>
+                    </div>
+                <% } %>
+
                 <% if (visitorData.exhibitsvisited.datamap) { 
                     const responses = [visitorData.exhibitinfo.datamap.q1[0], visitorData.exhibitinfo.datamap.q2[0], visitorData.exhibitinfo.datamap.q3[0]]
                     const trueCount = responses.filter(response => response === true).length; %>

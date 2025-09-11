@@ -52,14 +52,28 @@ async function updateMap() {
 
             fishtext = ''
             if (dotData.visitorData.exhibitsvisited.oceans) { 
-                fishtext = `<canvas id="fishCanvas${dotData.sessionId}" class="fishCanvas" width="300" height="300""></canvas><h2 class="fishName">${dotData.visitorData.exhibitinfo.oceans.name}</h2>`
+                fishtext = `<div class="popupcustom" style="max-width: 140px;transform: translateY(15px) scale(1.5);"><canvas id="fishCanvas${dotData.sessionId}" class="fishCanvas" width="300" height="300""></canvas><h2 class="fishName">${dotData.visitorData.exhibitinfo.oceans.name}</h2></div>`
+            }
+
+            bubbletext = ''
+            if (dotData.visitorData.exhibitsvisited.mebubble) {
+                bubbletext = `<div class="mebubble">`
+
+                dotData.visitorData.exhibitinfo.mebubble.forEach(bubble => { 
+                    bubbletext+= `<div class="bubble ${bubble.type}" style="position: absolute; left: ${bubble.position.left * 0.5}px; top: ${bubble.position.top * 0.5}px;">${bubble.text}</div>`
+                }); 
+
+                bubbletext += `</div>`
             }
 
             dotMarker.bindPopup(`
                 <div class=popupcustom>
-                <img src="/img/personalities/${dotData.group}.png" style="width: 150px; height: auto"><br>
-                ${fishtext}
-                <p>Created: ${new Date(dotData.timestamp).toLocaleString()}</p>
+                    <img src="/img/personalities/${dotData.group}.png" style="width: 150px; height: auto"><br>
+                    <div style="display: flex; flex-direction: row" >
+                        ${fishtext}
+                        ${bubbletext}
+                    </div>
+                    <p>Created: ${new Date(dotData.timestamp).toLocaleString()}</p>
                 </div>
             `);
 

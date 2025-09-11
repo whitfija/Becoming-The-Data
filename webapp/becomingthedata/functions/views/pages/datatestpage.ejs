@@ -13,30 +13,35 @@
         <div class="logo">
             <img src="/img/transparent_logo.svg" alt="Logo">
         </div>
-        <div id="content" class="center full">
+        <div id="content" class="center" style="margin-top: 50px;">
+            <div style="margin-top: 50px;"><%- include('../includes/dataseumtitle'); %></div>
+            <hr>
             <h1>Visitor Data</h1>
-            <table>
+            <table style="">
                 <thead>
                     <tr>
                         <th>SessionID</th>
-                        <th>Nickname</th>
+                        <th>Group</th>
                         <th>Active</th>
-                        <th>End Time</th>
                         <th>Start Time</th>
-                        <th>Score</th>
-                        <th>Stations</th>
+                        <th>ExhibitInfo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% visitors.forEach(visitor => { %>
                         <tr>
-                            <td><%= visitor.sessionid %></td>
-                            <td><%= visitor.name %></td>
+                            <td><%= visitor.sessionId %></td>
+                            <td><%= visitor.group %></td>
                             <td><%= visitor.active %></td>
-                            <td><%= visitor.endtime.toDate().toLocaleString() %></td>
                             <td><%= visitor.starttime.toDate().toLocaleString() %></td>
-                            <td><%= visitor.score %></td>
-                            <td><%= visitor.stations.join(', ') %></td>
+                            <td style="overflow-x: scroll;">
+                                AC: completed=<%= visitor.exhibitinfo.acid.completed %>|<%= visitor.exhibitinfo.acid.errors %> errors,
+                                AQI: <%= visitor.exhibitinfo.airquality.personalaqilimit%> | quiz: <%= visitor.exhibitinfo.airquality.correct %>, 
+                                map: [<%= visitor.exhibitinfo.datamap.q1 %> | <%= visitor.exhibitinfo.datamap.q2 %> | <%= visitor.exhibitinfo.datamap.q3 %>],
+                                game: [$<%= visitor.exhibitinfo.gridgame.priceincrease %> | <%= visitor.exhibitinfo.gridgame.reliability %>], 
+                                fish: [<%= visitor.exhibitinfo.oceans.name %>], 
+                                social: <%= visitor.exhibitinfo.socialdata %>
+                            </td>
                         </tr>
                     <% }); %>
                 </tbody>

@@ -66,12 +66,25 @@
 
                 dotMarker.bindPopup(`
                     <div class=popupcustom>
-                    <img src="/img/personalities/<%= dot.group %>.png" style="width: 150px; height: auto"><br>
-                    <% if (dot.visitorData.exhibitsvisited.oceans) { %>
-                        <canvas id="fishCanvas<%= dot.sessionId %>" class="fishCanvas" width="300" height="300"></canvas>
-                        <h2 class="fishName"><%= dot.visitorData.exhibitinfo.oceans.name %></h2>
-                    <% } %>
-                    <p>Created: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
+                        <img src="/img/personalities/<%= dot.group %>.png" style="width: 130px; height: auto"><br>
+                        <div style="display: flex; flex-direction: row;" >
+                        <% if (dot.visitorData.exhibitsvisited.oceans) { %>
+                            <div class="popupcustom" style="max-width: 140px;transform: translateY(15px) scale(1.5);">
+                                <canvas id="fishCanvas<%= dot.sessionId %>" class="fishCanvas" width="300" height="300"></canvas>
+                                <h2 class="fishName"><%= dot.visitorData.exhibitinfo.oceans.name %></h2>
+                            </div>
+                        <% } %>
+                        <% if (dot.visitorData.exhibitsvisited.mebubble) { %>
+                            <div class="mebubble">
+                            <% dot.visitorData.exhibitinfo.mebubble.forEach(bubble => { %>
+                                <div class="bubble <%= bubble.type %>" style="position: absolute; left: <%= bubble.position.left * 0.5 %>px; top: <%= bubble.position.top * 0.5 %>px;">
+                                    <%= bubble.text %>
+                                </div>
+                            <% }); %>
+                            </div>
+                        <% } %>
+                        </div>
+                        <p>Created: ${new Date(<%= dot.timestamp %>).toLocaleString()}</p>
                     </div>
                 `);
 

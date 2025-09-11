@@ -50,4 +50,8 @@ tbody tr:hover {
         padding: 5px;
         word-wrap: break-word;
     }
+
+    tbody tr:nth-child(even) {
+        background-color: #7F3206;
+    }
 }
